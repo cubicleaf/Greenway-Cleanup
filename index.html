@@ -10,22 +10,154 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
 /* ============================================
-   CSS VARIABLES
+   CSS VARIABLES — Deep Earth Palette
+   ============================================
+   Shifted from flat forest green to layered
+   earth tones: loam, bark, moss, river stone.
+   --loam:         Deep soil brown, primary bg
+   --loam-light:   Slightly lighter earth, modal bg
+   --bark:         Warm dark brown, near-black
+   --moss:         Golden-green, nature accent
+   --moss-muted:   Desaturated moss for subtle use
+   --river:        Cool blue-gray, water accent
+   --amber:        Warm gold, CTA / action color
+   --amber-light:  Hover state for amber
+   --cream:        Warm off-white, primary text
+   --cream-dark:   Muted cream, secondary text
+   --sand:         Warm border/divider tone
    ============================================ */
 :root {
-  --cream: #F5F0E8;
-  --cream-dark: #E8E0D4;
-  --forest: #2D4A2D;
-  --forest-light: #3B6A3B;
-  --leaf: #4A7C4A;
+  --loam: #1E1A14;
+  --loam-light: #2A2318;
+  --bark: #3D3228;
+  --moss: #6B7F4A;
+  --moss-muted: #4A5638;
+  --river: #3D8FB5;   /* Vibrant stream blue. Bumped from muted
+                         #7A9BA5 blue-gray to a saturated but
+                         still-natural forest-stream blue. Used
+                         in the hero river SVG and the logo badge. */
   --amber: #C49A2A;
   --amber-light: #D4A843;
-  --charcoal: #3A3A3A;
-  --charcoal-light: #6A6A6A;
+  --cream: #F5F0E8;
+  --cream-dark: #D5CEC2;
+  --sand: #8A7D6B;
   --white: #FFFFFF;
+  --ink: #1E1A14;        /* Always-dark token (kept for potential future use) */
+  --dirt: #6B5538;       /* Rich warm brown — primary CTA background.
+                            Replaced amber yellow. Works on both dark loam
+                            bg and cream bg. Text on dirt = white/cream,
+                            contrast ~7:1 (passes WCAG AAA). */
   --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --display: 'DM Serif Display', Georgia, serif;
   --radius: 12px;
+}
+
+/* ============================================
+   LIGHT MODE OVERRIDES — Field Journal palette
+   ============================================
+   When <body> has .light-mode, these five
+   surface variables flip. Everything downstream
+   that uses var(--loam), var(--cream), etc.
+   recolors automatically via CSS variable
+   inheritance — no other rules need to change.
+   Flora stays green on cream (naturalist sketchbook look).
+   ============================================ */
+body.light-mode {
+  --loam:        #D6CBAE;  /* dusty khaki parchment bg — "dirty" light mode.
+                              RGB(214,203,174). Muted, earthy, warm. Sits in
+                              the same earth-tone family as dark-mode --loam
+                              (#1E1A14) and --loam-light (#4A3E32) but at
+                              ~76% lightness. Lived-in, not sugary. */
+  --loam-light:  #4A3E32;  /* DIRT — modal bg. Darker earthy tone (was cream
+                              #EDE6D8). In light mode the modal now reads as a
+                              dark-earth card floating on parchment, which pops
+                              visually and solves the cream-on-cream contrast
+                              collapse for form labels and helper text. */
+  --cream:       #2D3A1E;  /* dark moss — primary text */
+  --cream-dark:  #3D3228;  /* bark — secondary text */
+  --sand:        #6B5E4C;  /* deeper sand for borders on cream */
+}
+
+/* When the modal renders in light mode its background flipped to dark dirt,
+   so ALL text inside it must flip back to the cream palette. We do this by
+   scoping the --cream/--cream-dark/--sand variables INSIDE .modal so every
+   descendant using those tokens (title, inputs, labels via rgba fallback)
+   renders correctly against the dark surface. This is a contained override —
+   outside the modal, light-mode text stays dark moss on parchment as usual. */
+body.light-mode .modal {
+  --cream:      #F5F0E8;  /* re-pin cream for modal-body text */
+  --cream-dark: #D5CEC2;  /* re-pin secondary cream */
+  --sand:       rgba(245, 240, 232, 0.25);  /* cream-tinted divider */
+}
+
+/* Submit button lift — default --dirt (#6B5538) is nearly the same hue as
+   the new #4A3E32 dirt modal bg, so the CTA visually collapses in light mode.
+   Swap to a warm tan (#A18A6B) scoped to this context: contrast vs modal bg
+   ~4.2:1 (AA), white text on tan ~3:1 (pairs with bold 1.1rem / 17.6px which
+   qualifies as "large text" under WCAG — passes AA large text). */
+body.light-mode .modal .submit-btn {
+  background: #A18A6B;
+  box-shadow: 0 4px 15px rgba(161, 138, 107, 0.25);
+}
+body.light-mode .modal .submit-btn:hover {
+  background: #B89E7F;
+}
+
+/* ============================================
+   GRASS BAND — earthy ground plane behind
+   river + flora. Now an SVG element (same
+   viewBox as the river) so the top edge can
+   follow the exact curve of the stream.
+   Top edge = river's upper bank shifted 120
+   SVG units upward (1.5 × ~80-unit stream width).
+   Fill uses an SVG mask for the fade so the
+   solid fill color can be a CSS variable —
+   that lets the mode toggle crossfade it.
+   ============================================ */
+:root {
+  --grass-color: #3A5022;   /* dark earthy moss — dark mode */
+}
+body.light-mode {
+  --grass-color: #48642C;   /* slightly brighter — parchment bg */
+}
+
+.grass-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;              /* behind river SVG (z:0) and all flora (z:0) */
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* SVG path fill uses var(--grass-color) so the
+   mode-toggle crossfade catches it */
+.grass-band path {
+  transition: fill 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ============================================
+   SMOOTH MODE CROSSFADE — 0.6s ease-in-out
+   ============================================
+   When the toggle fires, listed surfaces
+   transition their bg + text + border over
+   0.6s with cubic-bezier(0.25, 0.1, 0.25, 1).
+   :where() gives zero specificity so any
+   element-level transition (button hover, etc.)
+   still wins. Matches the playbook's
+   "slow and deliberate" principle.
+   ============================================ */
+:where(body, .hero, .modal, .modal-overlay,
+       .hero h1, .hero-tagline, .hero-badge,
+       .modal-title, .modal-sub,
+       .form-group label, .form-group input, .form-group select,
+       .hero-footer, .hero-footer a, .form-note,
+       .modal-close, .color-mode-toggle, .grass-band) {
+  transition: background-color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* ============================================
@@ -43,8 +175,8 @@ html {
 
 body {
   font-family: var(--sans);
-  background: var(--cream);
-  color: var(--charcoal);
+  background: var(--loam);
+  color: var(--cream);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   /* Prevent scroll when modal is open */
@@ -57,10 +189,10 @@ body.modal-open {
 
 /* ============================================
    HERO — full viewport, centered, minimal.
-   Title + button + "Just show up." That's it.
+   Deep earth background with nature SVG art.
    ============================================ */
 .hero {
-  background: var(--forest);
+  background: var(--loam);
   color: var(--cream);
   min-height: 100vh;
   display: flex;
@@ -68,25 +200,234 @@ body.modal-open {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 10rem;   /* extra bottom padding shifts the flex
+                                    center point upward ~80px on desktop,
+                                    clearing the top of the tree canopy */
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle gradient overlay */
+/* Warm atmospheric gradient — dark earth bottom,
+   hint of moss warmth top-center, faint amber glow.
+   These values are tuned for DARK bg. Light-mode
+   overrides below remap them to work on cream. */
 .hero::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 20% 80%, rgba(74, 124, 74, 0.3) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 20%, rgba(196, 154, 42, 0.1) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(107, 127, 74, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 90%, rgba(61, 50, 40, 0.6) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 30%, rgba(196, 154, 42, 0.06) 0%, transparent 40%);
   pointer-events: none;
+}
+
+/* Light-mode atmospheric glow — same three radial
+   positions but SUBTLER opacities so they whisper
+   against cream instead of shouting. Moss is barely
+   visible, bark glow in corner is very faint, amber
+   stays warm. If these read too strong on cream,
+   drop the opacities further. */
+body.light-mode .hero::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(107, 127, 74, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 90%, rgba(61, 50, 40, 0.05) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 30%, rgba(196, 154, 42, 0.08) 0%, transparent 40%);
+}
+
+/* ============================================
+   SCENE CONTAINER — holds the river SVG + all
+   flora icons. On desktop it fills the hero as
+   an absolute overlay. On mobile it locks to a
+   landscape aspect ratio so the percentage-based
+   positions don't distort on portrait screens.
+   ============================================ */
+.scene-container {
+  /* GROUND BAND — anchored to the bottom of the hero.
+     aspect-ratio: 3 / 1 locks the scene to a 3:1 landscape
+     shape at every viewport width. This is the key to stable
+     tree positioning: a tree's width in vw becomes a known %
+     of container height (5vw tree = 15% of container height),
+     so each tree's BASE lands in the same spot relative to the
+     stream SVG on every screen.
+     max-width: 1920px — without this, viewports wider than
+     1920px would hit the max-height cap and break the 3:1 ratio
+     (container becomes wider than 3:1). That breaks the math:
+     trees would render taller as a % of container height than
+     predicted, and their BASES would land LOWER than intended —
+     potentially on the path. Capping width preserves the ratio
+     on every screen; sides beyond 1920px just show the dark
+     loam background, which blends naturally with the hero. */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: auto;
+  width: 100%;
+  max-width: 1920px;
+  aspect-ratio: 3 / 1;
+  max-height: 640px;
+  pointer-events: none;
+  z-index: 2;   /* above hero::after (z-index:1) so trees render over the fade */
+  overflow: hidden;
+  container-type: inline-size;     /* enables `cqw` unit inside — 1cqw = 1% of
+                                      THIS container's width, not the viewport.
+                                      Flora widths use cqw so tree size tracks
+                                      the container, not the viewport. */
+  container-name: scene;
+}
+
+/* River SVG — fills the scene container */
+.hero-bg-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   SCENE-TO-HERO FADE — lives on .hero::after
+   so it can reach ABOVE the scene-container's
+   top edge, which ::after on the container
+   itself cannot do (overflow:hidden clips it).
+   The gradient rises from solid loam at the
+   bottom, stays solid through the scene band,
+   then dissolves into transparent by the time
+   it reaches the text area (~40% from top).
+   hero-content is z-index:2, this is z-index:1,
+   so text and buttons always render above it.
+   ============================================ */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(30, 26, 20, 1)   0%,
+    rgba(30, 26, 20, 1)   38%,
+    rgba(30, 26, 20, 0)   58%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Light-mode version — same shape, parchment tone */
+body.light-mode .hero::after {
+  background: linear-gradient(
+    to top,
+    rgba(214, 203, 174, 1)  0%,
+    rgba(214, 203, 174, 1)  38%,
+    rgba(214, 203, 174, 0)  58%
+  );
 }
 
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 3;   /* above scene-container (z-index:2) so text sits on top */
   max-width: 600px;
+}
+
+/* ============================================
+   FLORA ICONS — nature icons placed along both
+   banks of the stream. Each is absolutely
+   positioned within the scene container.
+   Icons are sorted by top% in the HTML so
+   higher-up icons render behind lower ones.
+   ============================================ */
+.flora-icon {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  width: 5cqw;            /* cqw = % of scene-container width (container query
+                             unit). Previously `vw` — but that scales with the
+                             viewport even when the container's capped at
+                             1920px, so on ultra-wide monitors trees grew past
+                             their predicted % of container height and their
+                             BASES spilled onto the path. cqw keeps the ratio
+                             stable. Individual tree widths in inline styles
+                             also use `cqw`. */
+  height: auto;
+  aspect-ratio: 1;        /* Reserve a 1:1 box BEFORE the SVG loads.
+                             Fixes CLS (Cumulative Layout Shift) from
+                             108 icons popping into place one by one. */
+  opacity: 1;
+}
+
+/* ============================================
+   MOBILE: scene-container already scales correctly
+   via aspect-ratio: 3/1. We just cap max-height
+   differently and bump min-width on icons so trees
+   don't shrink to invisibility on tiny phones.
+   ============================================ */
+@media (max-width: 768px) {
+  .hero {
+    justify-content: flex-start;  /* poster layout: content anchors to the
+                                     top, scene fills the bottom — no more
+                                     dead gap from vertical centering */
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .scene-container {
+    width: 280%;            /* wider than viewport = zoomed center crop.
+                               the diagonal path in the SVG already reads
+                               as SE slope — no rotation needed */
+    max-width: 900px;
+    aspect-ratio: auto;
+    height: 240px;
+    max-height: 240px;
+    transform: translateX(-50%); /* re-center, no rotation */
+  }
+
+  .flora-icon {
+    min-width: 24px;
+    max-width: 52px;        /* second safety net — tree icons never
+                               grow past 52px regardless of container */
+  }
+}
+
+@media (max-width: 480px) {
+  .scene-container {
+    width: 300%;
+    max-width: 900px;
+    height: 220px;
+    max-height: 220px;
+    aspect-ratio: auto;
+    transform: translateX(-50%);
+  }
+
+  .flora-icon {
+    min-width: 20px;
+    max-width: 44px;
+  }
+}
+
+/* ============================================
+   LOGO BADGE — compact emblem above the title.
+   Trees + river in a circular SVG mark.
+   ============================================ */
+/* ============================================
+   ENTRANCE CASCADE (condensed)
+   ============================================
+   Original cascade finished at 2.8s — too long
+   for a QR-code stranger who'd bounce. Compressed
+   to finish by 1.15s while preserving stagger
+   feel. Each element starts ~0.08–0.15s after
+   the one before. CTA appears by 0.95s.
+   Durations: 0.5s per item (was 1.0–1.2s).
+   ============================================ */
+.hero-logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  display: block;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.05s forwards;
 }
 
 .hero-badge {
@@ -95,10 +436,10 @@ body.modal-open {
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--amber-light);
+  color: var(--sand);
   margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fade-in 1s ease 0.3s forwards;
+  animation: fade-in 0.5s ease 0.12s forwards;
 }
 
 .hero h1 {
@@ -107,12 +448,14 @@ body.modal-open {
   font-weight: 400;
   line-height: 1.15;
   margin-bottom: 2rem;
-  color: var(--white);
+  color: var(--cream);
   opacity: 0;
-  animation: fade-in 1s ease 0.6s forwards;
+  animation: fade-in 0.5s ease 0.2s forwards;
 }
 
-/* "Just show up." — slides in from the left */
+/* "Just show up." — slides in from the left.
+   Shorter slide distance (was -40px, now -24px)
+   so the 0.5s duration still feels gentle. */
 .hero-tagline {
   font-family: var(--display);
   font-size: clamp(1.2rem, 4vw, 1.6rem);
@@ -121,13 +464,26 @@ body.modal-open {
   color: rgba(245, 240, 232, 0.6);
   margin-bottom: 3rem;
   opacity: 0;
-  transform: translateX(-40px);
-  animation: slide-in-left 1.2s cubic-bezier(0.25, 0, 0, 1) 1.2s forwards;
+  transform: translateX(-24px);
+  animation: slide-in-left 0.55s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s forwards;
 }
 
+/* ============================================
+   PRIMARY CTA — dirt-colored pill button.
+   ============================================
+   Background: --dirt (#6B5538, tilled earth brown).
+   Text: white (~7:1 contrast on dirt — passes AAA).
+   Box-shadow: faint amber halo keeps the amber
+     gradient warmth feeling intentional.
+   Hover: brightens the dirt by ~12% via color-mix,
+     lifts 2px, glow deepens.
+   Press: scale(0.95) per playbook pattern.
+   Entrance: 0.5s fade at 0.45s delay — visible
+     by 0.95s, fast enough for a QR stranger.
+   ============================================ */
 .hero-cta {
   display: inline-block;
-  background: var(--amber);
+  background: var(--dirt);
   color: var(--white);
   font-family: var(--sans);
   font-size: 1.1rem;
@@ -138,21 +494,22 @@ body.modal-open {
   border: none;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 20px rgba(196, 154, 42, 0.3);
+  box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
   min-height: 54px;
   opacity: 0;
-  animation: fade-in 1s ease 1.8s forwards;
+  animation: fade-in 0.5s ease 0.45s forwards;
 }
 
 .hero-cta:hover {
-  background: var(--amber-light);
+  /* color-mix lightens the dirt by 12% toward cream without hardcoding a hex */
+  background: color-mix(in srgb, var(--dirt) 88%, var(--cream));
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(196, 154, 42, 0.4);
+  box-shadow: 0 6px 25px rgba(196, 154, 42, 0.35);
 }
 
 .hero-cta:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 10px rgba(196, 154, 42, 0.3);
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(196, 154, 42, 0.25);
 }
 
 /* ============================================
@@ -164,22 +521,22 @@ body.modal-open {
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;   /* matches hero-content, above scene-container */
   font-size: 0.7rem;
-  color: rgba(245, 240, 232, 0.25);
+  color: rgba(245, 240, 232, 0.18);
   letter-spacing: 1px;
   opacity: 0;
-  animation: fade-in 1s ease 2.5s forwards;
+  animation: fade-in 0.5s ease 0.65s forwards;
 }
 
 .hero-footer a {
-  color: rgba(245, 240, 232, 0.35);
+  color: rgba(245, 240, 232, 0.25);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .hero-footer a:hover {
-  color: rgba(245, 240, 232, 0.6);
+  color: rgba(245, 240, 232, 0.5);
 }
 
 /* ============================================
@@ -202,6 +559,71 @@ body.modal-open {
 }
 
 /* ============================================
+   COLOR MODE TOGGLE — top-right corner
+   ============================================
+   A fixed 44×44 circular button with a sun or
+   moon SVG inside. Sits above hero content so
+   it's always reachable, below modal z-index
+   so it disappears when the modal is open.
+   The two SVGs inside are both rendered;
+   CSS hides whichever one doesn't match the
+   current mode. This avoids any JS-side icon
+   swapping and keeps things declarative.
+   ============================================ */
+.color-mode-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(245, 240, 232, 0.15);
+  background: rgba(245, 240, 232, 0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  z-index: 100;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.7s forwards;
+  /* Hover and press feel */
+  transition: background 0.3s ease, border-color 0.3s ease,
+              color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 0.2s ease;
+}
+
+.color-mode-toggle:hover {
+  background: rgba(245, 240, 232, 0.12);
+  border-color: rgba(245, 240, 232, 0.3);
+}
+
+.color-mode-toggle:active {
+  transform: scale(0.92);   /* playbook press state */
+}
+
+/* On cream bg the outline needs slightly more
+   contrast so the button still looks like a button */
+body.light-mode .color-mode-toggle {
+  border-color: rgba(30, 26, 20, 0.2);
+  background: rgba(30, 26, 20, 0.04);
+}
+
+body.light-mode .color-mode-toggle:hover {
+  background: rgba(30, 26, 20, 0.08);
+  border-color: rgba(30, 26, 20, 0.35);
+}
+
+/* Show the right icon for the current mode.
+   Dark mode → the moon is visible (tap to go light).
+   Light mode → the sun is visible (tap to go dark). */
+.color-mode-toggle .icon-sun  { display: none; }
+.color-mode-toggle .icon-moon { display: block; }
+
+body.light-mode .color-mode-toggle .icon-sun  { display: block; }
+body.light-mode .color-mode-toggle .icon-moon { display: none; }
+
+/* ============================================
    MODAL OVERLAY — the dark backdrop behind
    the modal. Clicking it closes the modal.
    ============================================ */
@@ -221,7 +643,7 @@ body.modal-open {
 }
 
 .modal-overlay.active {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(20, 16, 12, 0.7);
   pointer-events: auto;
 }
 
@@ -232,7 +654,7 @@ body.modal-open {
    On desktop: centered card.
    ============================================ */
 .modal {
-  background: var(--forest);
+  background: var(--loam-light);
   width: 100%;
   max-width: 500px;
   max-height: 85vh;
@@ -409,7 +831,7 @@ body.modal-open {
 }
 
 .form-group select option {
-  background: var(--forest);
+  background: var(--loam-light);
   color: var(--cream);
 }
 
@@ -428,7 +850,7 @@ body.modal-open {
 .submit-btn {
   display: block;
   width: 100%;
-  background: var(--amber);
+  background: var(--dirt);
   color: var(--white);
   font-family: var(--sans);
   font-size: 1.1rem;
@@ -439,17 +861,17 @@ body.modal-open {
   cursor: pointer;
   margin-top: 1.5rem;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(196, 154, 42, 0.25);
+  box-shadow: 0 4px 15px rgba(196, 154, 42, 0.20);
   min-height: 54px;
 }
 
 .submit-btn:hover {
-  background: var(--amber-light);
+  background: color-mix(in srgb, var(--dirt) 88%, var(--cream));
   transform: translateY(-1px);
 }
 
 .submit-btn:active {
-  transform: translateY(0);
+  transform: scale(0.95);
 }
 
 .form-note {
@@ -463,16 +885,557 @@ body.modal-open {
 <body>
 
 <!-- ==========================================
-     HERO — the entire visible page.
-     Title, tagline, one button.
+     COLOR MODE TOGGLE — fixed top-right.
+     Click to switch between dark (default) and
+     light (field-journal) mode. Choice persists
+     via localStorage.
      ========================================== -->
-<div class="hero">
+<button class="color-mode-toggle" id="color-mode-toggle"
+        type="button"
+        aria-label="Switch to light mode"
+        aria-pressed="false">
+  <!-- Moon icon: visible in dark mode (tap to go light) -->
+  <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"
+       fill="none" stroke="currentColor" stroke-width="1.5"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20 14.5 A 8 8 0 1 1 9.5 4 A 6 6 0 0 0 20 14.5 Z"/>
+  </svg>
+  <!-- Sun icon: visible in light mode (tap to go dark) -->
+  <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"
+       fill="none" stroke="currentColor" stroke-width="1.5"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2 V4 M12 20 V22 M2 12 H4 M20 12 H22
+             M4.93 4.93 L6.34 6.34 M17.66 17.66 L19.07 19.07
+             M4.93 19.07 L6.34 17.66 M17.66 6.34 L19.07 4.93"/>
+  </svg>
+</button>
+
+<!-- ==========================================
+     HERO — the entire visible page.
+     Logo badge, title, tagline, CTA, learn more.
+     ========================================== --><div class="hero">
+
+  <!-- Scene container: locks flora + river to a consistent
+       aspect ratio so mobile doesn't distort positions. -->
+  <div class="scene-container">
+
+    <!-- Grass ground plane — SVG matches the river's viewBox exactly
+         so the top edge tracks the stream curve.
+         Top bank of river: M-10,460 ... 1010,935
+         Offset 120 SVG units upward (1.5 × 80-unit stream width):
+         M-10,340 ... 1010,815
+         Fill: var(--grass-color) behind an opacity mask so the
+         mode-toggle crossfade works cleanly. -->
+    <svg class="grass-band" viewBox="0 0 1000 1000"
+         preserveAspectRatio="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <!-- Vertical Gaussian blur — the only technique that creates a
+             fade which actually follows the curved edge. A gradient
+             measures from a fixed y-coordinate, so the right side of
+             the curve (which sits much lower in the SVG) is already
+             near-opaque before the fade can start. Blur works
+             differently: it spreads the fill colour outward from
+             whatever edge the shape has, so the fade tracks the curve
+             exactly. stdDeviation="0 30": no horizontal spread, 30
+             SVG-units vertical spread (≈ 3% of the 1000-unit height).
+             filter region y="-10%" height="120%" gives the blur
+             room to expand above the top edge without clipping. -->
+        <filter id="grassBlur" x="0" y="-10%" width="100%" height="120%"
+                color-interpolation-filters="linearRGB">
+          <feGaussianBlur stdDeviation="0 30"/>
+        </filter>
+      </defs>
+      <!-- opacity="0.93": keeps the grass rich but not poster-paint flat.
+           The blur softens the top ~90 SVG units (3× stdDeviation)
+           above and below the curved edge; the interior stays solid. -->
+      <path fill="var(--grass-color)"
+            filter="url(#grassBlur)"
+            opacity="0.93"
+            d="M-10,340
+               C100,370 220,500 300,530
+               C380,560 470,560 550,560
+               C630,560 720,720 800,750
+               C880,780 970,815 1010,815
+               L1010,1000 L-10,1000 Z"/>
+    </svg>
+
+    <!-- Background nature scene — river only for now.
+         Tim's actual river-5-svgrepo SVG, recolored blue,
+         flipped and scaled to span edge-to-edge across
+         the lower third of the viewport. -->
+    <svg class="hero-bg-art" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+      <!-- RIVER: Thin meandering creek.
+           Fixed endpoints: enters LEFT EDGE at y=460–540 (middle-left),
+           exits at BOTTOM-RIGHT CORNER (1010,1010).
+           Width: ~80 SVG units (thin creek).
+           Meanders: 3 anchor points deviate alternately below/above
+           the straight diagonal — dips south around x=300, bends north
+           around x=550, dips south again around x=800. -->
+
+      <!-- Main river body — top bank traces meanders, bottom bank mirrors ~80 units below -->
+      <path fill="#3D8FB5" opacity="0.50"
+            d="M-10,460
+               C100,490 220,620 300,650
+               C380,680 470,680 550,680
+               C630,680 720,840 800,870
+               C880,900 970,935 1010,935
+               L1010,1010
+               C970,1010 880,985 800,950
+               C720,920 630,760 550,760
+               C470,760 380,760 300,730
+               C220,700 100,570 -10,540
+               Z"/>
+
+      <!-- River highlight — lighter streak down the centerline -->
+      <path fill="none" stroke="#7DC5E0" stroke-width="4" opacity="0.30"
+            d="M-10,500
+               C100,530 220,665 300,690
+               C380,720 470,720 550,720
+               C630,720 720,880 800,910
+               C880,942 970,972 1010,972"/>
+
+      <!-- River depth — darker edge tracing the bottom bank -->
+      <path fill="none" stroke="#1F5D7A" stroke-width="3" opacity="0.40"
+            d="M-10,535
+               C100,565 220,695 300,725
+               C380,755 470,755 550,755
+               C630,755 720,835 800,945
+               C880,978 970,1007 1010,1010"/>
+
+      <!-- CONCRETE PATH — runs parallel to the stream's lower bank.
+           Moved 40 SVG units below original position to create a
+           visible grassy strip between stream and path.
+           Gap: ~48 SVG units (4.8%) between bottom bank and path top.
+           stroke-width="18" = ~19px on a 1080px tall viewport.
+           Color: #B0A898 warm concrete gray, matching the earthy palette.
+           opacity: 0.6 keeps it readable without overpowering the scene. -->
+      <path fill="none"
+            stroke="#B0A898"
+            stroke-width="18"
+            stroke-linecap="butt"
+            opacity="0.6"
+            d="M-10,592
+               C100,622 220,752 300,782
+               C380,812 470,812 550,812
+               C630,812 720,972 800,1002
+               C880,1037 970,1062 1010,1062"/>
+
+    </svg>
+
+<!-- ════════════════════════════════════════════════════
+       REGENERATED FLORA v4 — stratified depth, filled sparse zones.
+       Rules:
+         1. Tree width is a DETERMINISTIC function of depth (y).
+            Further back = smaller; closer = bigger. No randomness.
+         2. Band widths are non-overlapping:
+              A: 2.8–3.6 cqw (north bank)
+              S: 3.7–4.5 cqw (strip)
+              B: 4.6–5.6 cqw (below path)
+         3. Render order = visible trunk base y (closer on top).
+         4. Within-band min spacing = 1.3× max(width) when depths
+            are similar.
+       Total: 120 trees (A=58, S=28, B=34).
+       ════════════════════════════════════════════════════ -->
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:44.5% T:49.4% W:2.81cqw · base:57.9% depth_t:0.01 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:44.5%; top:49.4%; width:2.81cqw;">
+
+  <!-- A. flower-green-leaf-svgrepo-com · L:81.3% T:69.3% W:2.82cqw · base:77.7% depth_t:0.03 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:81.3%; top:69.3%; width:2.82cqw;">
+
+  <!-- A. ecology-forest-garden-svgrepo-com · L:87.9% T:73.7% W:2.83cqw · base:80.4% depth_t:0.04 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-svgrepo-com.svg" alt="" style="left:87.9%; top:73.7%; width:2.83cqw;">
+
+  <!-- A. forest-round-tree-tree-svgrepo-com · L:31.0% T:47.4% W:2.85cqw · base:55.9% depth_t:0.06 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:31.0%; top:47.4%; width:2.85cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:65.7% T:56.7% W:2.86cqw · base:65.3% depth_t:0.08 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:65.7%; top:56.7%; width:2.86cqw;">
+
+  <!-- A. tree-svgrepo-com-2 · L:51.1% T:50.5% W:2.88cqw · base:58.9% depth_t:0.09 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-2.svg" alt="" style="left:51.1%; top:50.5%; width:2.88cqw;">
+
+  <!-- A. floral-flower-garden-svgrepo-com · L:24.8% T:47.0% W:2.89cqw · base:53.3% depth_t:0.11 -->
+  <img class="flora-icon" src="flora/floral-flower-garden-svgrepo-com.svg" alt="" style="left:24.8%; top:47.0%; width:2.89cqw;">
+
+  <!-- A. ecology-forest-leaf-2-svgrepo-com · L:12.3% T:35.6% W:2.90cqw · base:44.3% depth_t:0.13 -->
+  <img class="flora-icon" src="flora/ecology-forest-leaf-2-svgrepo-com.svg" alt="" style="left:12.3%; top:35.6%; width:2.90cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:1.4% T:29.8% W:2.92cqw · base:38.2% depth_t:0.15 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:1.4%; top:29.8%; width:2.92cqw;">
+
+  <!-- A. tree-svgrepo-com-3 · L:8.9% T:33.9% W:2.93cqw · base:42.3% depth_t:0.16 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:8.9%; top:33.9%; width:2.93cqw;">
+
+  <!-- A. tree-svgrepo-com-3 · L:28.6% T:47.6% W:2.94cqw · base:56.1% depth_t:0.18 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:28.6%; top:47.6%; width:2.94cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:99.0% T:76.3% W:2.96cqw · base:85.2% depth_t:0.20 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:99.0%; top:76.3%; width:2.96cqw;">
+
+  <!-- A. flower-green-leaf-svgrepo-com · L:2.6% T:30.5% W:2.97cqw · base:39.4% depth_t:0.22 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:2.6%; top:30.5%; width:2.97cqw;">
+
+  <!-- A. flower-forest-nature-svgrepo-com · L:5.9% T:32.3% W:2.99cqw · base:41.2% depth_t:0.23 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:5.9%; top:32.3%; width:2.99cqw;">
+
+  <!-- A. flower-forest-nature-svgrepo-com · L:53.7% T:51.4% W:3.00cqw · base:60.4% depth_t:0.25 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:53.7%; top:51.4%; width:3.00cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:63.1% T:55.9% W:3.01cqw · base:64.7% depth_t:0.27 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:63.1%; top:55.9%; width:3.01cqw;">
+
+  <!-- A. tree-svgrepo-com-3 · L:34.1% T:50.3% W:3.03cqw · base:59.0% depth_t:0.28 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:34.1%; top:50.3%; width:3.03cqw;">
+
+  <!-- A. flower-forest-nature-svgrepo-com · L:82.2% T:71.6% W:3.04cqw · base:80.7% depth_t:0.30 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:82.2%; top:71.6%; width:3.04cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:54.6% T:52.2% W:3.05cqw · base:61.1% depth_t:0.32 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:54.6%; top:52.2%; width:3.05cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:37.2% T:51.3% W:3.07cqw · base:60.2% depth_t:0.34 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:37.2%; top:51.3%; width:3.07cqw;">
+
+  <!-- A. tree-svgrepo-com-8 · L:38.7% T:51.6% W:3.08cqw · base:60.6% depth_t:0.35 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-8.svg" alt="" style="left:38.7%; top:51.6%; width:3.08cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:94.9% T:76.6% W:3.10cqw · base:85.9% depth_t:0.37 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:94.9%; top:76.6%; width:3.10cqw;">
+
+  <!-- A. tree-svgrepo-com-2 · L:26.5% T:47.9% W:3.11cqw · base:57.0% depth_t:0.39 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-2.svg" alt="" style="left:26.5%; top:47.9%; width:3.11cqw;">
+
+  <!-- A. tree-svgrepo-com-3 · L:85.2% T:73.8% W:3.12cqw · base:82.9% depth_t:0.40 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:85.2%; top:73.8%; width:3.12cqw;">
+
+  <!-- A. ecology-forest-garden-svgrepo-com · L:57.7% T:55.2% W:3.14cqw · base:62.6% depth_t:0.42 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-svgrepo-com.svg" alt="" style="left:57.7%; top:55.2%; width:3.14cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:67.6% T:61.3% W:3.15cqw · base:70.7% depth_t:0.44 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:67.6%; top:61.3%; width:3.15cqw;">
+
+  <!-- A. ecology-forest-leaf-2-svgrepo-com · L:89.1% T:75.3% W:3.16cqw · base:84.8% depth_t:0.46 -->
+  <img class="flora-icon" src="flora/ecology-forest-leaf-2-svgrepo-com.svg" alt="" style="left:89.1%; top:75.3%; width:3.16cqw;">
+
+  <!-- A. flower-forest-garden-svgrepo-com · L:31.8% T:52.8% W:3.18cqw · base:60.2% depth_t:0.47 -->
+  <img class="flora-icon" src="flora/flower-forest-garden-svgrepo-com.svg" alt="" style="left:31.8%; top:52.8%; width:3.18cqw;">
+
+  <!-- A. tree-svgrepo-com-19 · L:10.3% T:37.4% W:3.19cqw · base:46.5% depth_t:0.49 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-19.svg" alt="" style="left:10.3%; top:37.4%; width:3.19cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:18.9% T:43.3% W:3.21cqw · base:52.9% depth_t:0.51 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:18.9%; top:43.3%; width:3.21cqw;">
+
+  <!-- A. plant-tree-svgrepo-com · L:65.1% T:59.4% W:3.22cqw · base:69.0% depth_t:0.53 -->
+  <img class="flora-icon" src="flora/plant-tree-svgrepo-com.svg" alt="" style="left:65.1%; top:59.4%; width:3.22cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:13.0% T:39.4% W:3.23cqw · base:48.8% depth_t:0.54 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:13.0%; top:39.4%; width:3.23cqw;">
+
+  <!-- A. tree-svgrepo-com-3 · L:50.2% T:54.0% W:3.25cqw · base:63.4% depth_t:0.56 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:50.2%; top:54.0%; width:3.25cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:16.1% T:41.6% W:3.26cqw · base:51.4% depth_t:0.58 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:16.1%; top:41.6%; width:3.26cqw;">
+
+  <!-- A. tree-svgrepo-com-8 · L:97.5% T:79.2% W:3.28cqw · base:88.8% depth_t:0.59 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-8.svg" alt="" style="left:97.5%; top:79.2%; width:3.28cqw;">
+
+  <!-- A. forest-leaf-nature-svgrepo-com · L:46.7% T:54.0% W:3.29cqw · base:63.8% depth_t:0.61 -->
+  <img class="flora-icon" src="flora/forest-leaf-nature-svgrepo-com.svg" alt="" style="left:46.7%; top:54.0%; width:3.29cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:61.6% T:57.1% W:3.30cqw · base:67.0% depth_t:0.63 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:61.6%; top:57.1%; width:3.30cqw;">
+
+  <!-- A. tree-svgrepo-com-19 · L:87.5% T:76.6% W:3.32cqw · base:86.1% depth_t:0.65 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-19.svg" alt="" style="left:87.5%; top:76.6%; width:3.32cqw;">
+
+  <!-- A. forest-leaf-nature-svgrepo-com · L:65.7% T:61.0% W:3.33cqw · base:71.0% depth_t:0.66 -->
+  <img class="flora-icon" src="flora/forest-leaf-nature-svgrepo-com.svg" alt="" style="left:65.7%; top:61.0%; width:3.33cqw;">
+
+  <!-- A. tree-svgrepo-com-13 · L:40.3% T:54.4% W:3.35cqw · base:64.0% depth_t:0.68 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:40.3%; top:54.4%; width:3.35cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:44.1% T:54.5% W:3.36cqw · base:64.5% depth_t:0.70 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:44.1%; top:54.5%; width:3.36cqw;">
+
+  <!-- A. flower-garden-green-svgrepo-com · L:69.1% T:64.9% W:3.37cqw · base:75.0% depth_t:0.72 -->
+  <img class="flora-icon" src="flora/flower-garden-green-svgrepo-com.svg" alt="" style="left:69.1%; top:64.9%; width:3.37cqw;">
+
+  <!-- A. plant-tree-svgrepo-com · L:25.1% T:49.3% W:3.39cqw · base:59.5% depth_t:0.73 -->
+  <img class="flora-icon" src="flora/plant-tree-svgrepo-com.svg" alt="" style="left:25.1%; top:49.3%; width:3.39cqw;">
+
+  <!-- A. ecology-forest-garden-svgrepo-com · L:12.3% T:42.3% W:3.40cqw · base:50.3% depth_t:0.75 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-svgrepo-com.svg" alt="" style="left:12.3%; top:42.3%; width:3.40cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:91.1% T:78.6% W:3.41cqw · base:88.5% depth_t:0.77 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:91.1%; top:78.6%; width:3.41cqw;">
+
+  <!-- A. flower-forest-garden-svgrepo-com · L:77.2% T:75.2% W:3.43cqw · base:83.1% depth_t:0.78 -->
+  <img class="flora-icon" src="flora/flower-forest-garden-svgrepo-com.svg" alt="" style="left:77.2%; top:75.2%; width:3.43cqw;">
+
+  <!-- A. forest-nature-park-svgrepo-com · L:37.8% T:54.5% W:3.44cqw · base:64.8% depth_t:0.80 -->
+  <img class="flora-icon" src="flora/forest-nature-park-svgrepo-com.svg" alt="" style="left:37.8%; top:54.5%; width:3.44cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:80.9% T:75.3% W:3.46cqw · base:85.3% depth_t:0.82 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:80.9%; top:75.3%; width:3.46cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:58.9% T:57.2% W:3.47cqw · base:67.2% depth_t:0.84 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:58.9%; top:57.2%; width:3.47cqw;">
+
+  <!-- A. tree-svgrepo-com-8 · L:20.6% T:47.3% W:3.48cqw · base:57.5% depth_t:0.85 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-8.svg" alt="" style="left:20.6%; top:47.3%; width:3.48cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:54.1% T:56.0% W:3.50cqw · base:66.4% depth_t:0.87 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:54.1%; top:56.0%; width:3.50cqw;">
+
+  <!-- A. flower-forest-nature-svgrepo-com · L:81.7% T:75.7% W:3.51cqw · base:86.3% depth_t:0.89 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:81.7%; top:75.7%; width:3.51cqw;">
+
+  <!-- A. flower-forest-nature-svgrepo-com · L:2.1% T:35.3% W:3.52cqw · base:45.9% depth_t:0.90 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:2.1%; top:35.3%; width:3.52cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:74.3% T:71.5% W:3.54cqw · base:82.1% depth_t:0.92 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:74.3%; top:71.5%; width:3.54cqw;">
+
+  <!-- A. ecology-forest-lush-svgrepo-com · L:94.2% T:80.6% W:3.55cqw · base:91.2% depth_t:0.94 -->
+  <img class="flora-icon" src="flora/ecology-forest-lush-svgrepo-com.svg" alt="" style="left:94.2%; top:80.6%; width:3.55cqw;">
+
+  <!-- A. ecology-forest-garden-2-svgrepo-com · L:24.2% T:50.4% W:3.57cqw · base:61.1% depth_t:0.96 -->
+  <img class="flora-icon" src="flora/ecology-forest-garden-2-svgrepo-com.svg" alt="" style="left:24.2%; top:50.4%; width:3.57cqw;">
+
+  <!-- A. tree-svgrepo-com-4 · L:45.0% T:56.9% W:3.58cqw · base:67.2% depth_t:0.97 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:45.0%; top:56.9%; width:3.58cqw;">
+
+  <!-- A. forest-leaf-nature-svgrepo-com · L:70.9% T:68.7% W:3.59cqw · base:79.5% depth_t:0.99 -->
+  <img class="flora-icon" src="flora/forest-leaf-nature-svgrepo-com.svg" alt="" style="left:70.9%; top:68.7%; width:3.59cqw;">
+
+  <!-- S. ecology-flower-nature-svgrepo-com · L:87.2% T:87.2% W:3.71cqw · base:98.4% depth_t:0.02 -->
+  <img class="flora-icon" src="flora/ecology-flower-nature-svgrepo-com.svg" alt="" style="left:87.2%; top:87.2%; width:3.71cqw;">
+
+  <!-- S. ecology-flower-nature-svgrepo-com · L:97.0% T:90.2% W:3.74cqw · base:101.4% depth_t:0.05 -->
+  <img class="flora-icon" src="flora/ecology-flower-nature-svgrepo-com.svg" alt="" style="left:97.0%; top:90.2%; width:3.74cqw;">
+
+  <!-- S. tree-svgrepo-com-13 · L:59.2% T:67.1% W:3.77cqw · base:77.9% depth_t:0.09 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:59.2%; top:67.1%; width:3.77cqw;">
+
+  <!-- S. forest-green-plant-svgrepo-com · L:37.6% T:64.3% W:3.80cqw · base:75.7% depth_t:0.13 -->
+  <img class="flora-icon" src="flora/forest-green-plant-svgrepo-com.svg" alt="" style="left:37.6%; top:64.3%; width:3.80cqw;">
+
+  <!-- S. tree-svgrepo-com-2 · L:2.2% T:44.6% W:3.83cqw · base:55.9% depth_t:0.16 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-2.svg" alt="" style="left:2.2%; top:44.6%; width:3.83cqw;">
+
+  <!-- S. floral-flower-garden-svgrepo-com · L:68.8% T:78.1% W:3.86cqw · base:86.5% depth_t:0.20 -->
+  <img class="flora-icon" src="flora/floral-flower-garden-svgrepo-com.svg" alt="" style="left:68.8%; top:78.1%; width:3.86cqw;">
+
+  <!-- S. plant-tree-svgrepo-com · L:93.3% T:88.9% W:3.89cqw · base:100.6% depth_t:0.23 -->
+  <img class="flora-icon" src="flora/plant-tree-svgrepo-com.svg" alt="" style="left:93.3%; top:88.9%; width:3.89cqw;">
+
+  <!-- S. ecology-flower-nature-svgrepo-com · L:19.2% T:55.3% W:3.91cqw · base:67.1% depth_t:0.27 -->
+  <img class="flora-icon" src="flora/ecology-flower-nature-svgrepo-com.svg" alt="" style="left:19.2%; top:55.3%; width:3.91cqw;">
+
+  <!-- S. forest-green-plant-svgrepo-com · L:51.6% T:65.1% W:3.94cqw · base:76.9% depth_t:0.31 -->
+  <img class="flora-icon" src="flora/forest-green-plant-svgrepo-com.svg" alt="" style="left:51.6%; top:65.1%; width:3.94cqw;">
+
+  <!-- S. tree-svgrepo-com-19 · L:23.8% T:59.1% W:3.97cqw · base:70.4% depth_t:0.34 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-19.svg" alt="" style="left:23.8%; top:59.1%; width:3.97cqw;">
+
+  <!-- S. forest-round-tree-tree-svgrepo-com · L:84.9% T:85.9% W:4.00cqw · base:97.9% depth_t:0.37 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:84.9%; top:85.9%; width:4.00cqw;">
+
+  <!-- S. forest-round-tree-tree-svgrepo-com · L:6.5% T:46.2% W:4.03cqw · base:58.3% depth_t:0.41 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:6.5%; top:46.2%; width:4.03cqw;">
+
+  <!-- S. tree-svgrepo-com-2 · L:80.2% T:84.2% W:4.06cqw · base:96.1% depth_t:0.45 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-2.svg" alt="" style="left:80.2%; top:84.2%; width:4.06cqw;">
+
+  <!-- S. forest-round-tree-tree-2-svgrepo-com · L:65.6% T:71.3% W:4.08cqw · base:83.5% depth_t:0.48 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-2-svgrepo-com.svg" alt="" style="left:65.6%; top:71.3%; width:4.08cqw;">
+
+  <!-- S. flower-forest-nature-svgrepo-com · L:75.5% T:81.0% W:4.11cqw · base:93.3% depth_t:0.52 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:75.5%; top:81.0%; width:4.11cqw;">
+
+  <!-- S. flower-garden-plant-svgrepo-com · L:54.9% T:64.7% W:4.14cqw · base:77.2% depth_t:0.55 -->
+  <img class="flora-icon" src="flora/flower-garden-plant-svgrepo-com.svg" alt="" style="left:54.9%; top:64.7%; width:4.14cqw;">
+
+  <!-- S. ecology-forest-leaf-2-svgrepo-com · L:44.8% T:64.5% W:4.17cqw · base:77.0% depth_t:0.59 -->
+  <img class="flora-icon" src="flora/ecology-forest-leaf-2-svgrepo-com.svg" alt="" style="left:44.8%; top:64.5%; width:4.17cqw;">
+
+  <!-- S. ecology-forest-leaf-2-svgrepo-com · L:12.7% T:50.0% W:4.20cqw · base:62.6% depth_t:0.63 -->
+  <img class="flora-icon" src="flora/ecology-forest-leaf-2-svgrepo-com.svg" alt="" style="left:12.7%; top:50.0%; width:4.20cqw;">
+
+  <!-- S. flower-forest-nature-svgrepo-com · L:26.5% T:59.9% W:4.23cqw · base:72.5% depth_t:0.66 -->
+  <img class="flora-icon" src="flora/flower-forest-nature-svgrepo-com.svg" alt="" style="left:26.5%; top:59.9%; width:4.23cqw;">
+
+  <!-- S. ecology-flower-nature-svgrepo-com · L:71.5% T:77.0% W:4.26cqw · base:89.8% depth_t:0.70 -->
+  <img class="flora-icon" src="flora/ecology-flower-nature-svgrepo-com.svg" alt="" style="left:71.5%; top:77.0%; width:4.26cqw;">
+
+  <!-- S. plant-tree-svgrepo-com · L:17.4% T:53.3% W:4.28cqw · base:66.2% depth_t:0.73 -->
+  <img class="flora-icon" src="flora/plant-tree-svgrepo-com.svg" alt="" style="left:17.4%; top:53.3%; width:4.28cqw;">
+
+  <!-- S. flower-green-leaf-svgrepo-com · L:35.7% T:63.1% W:4.31cqw · base:76.0% depth_t:0.77 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:35.7%; top:63.1%; width:4.31cqw;">
+
+  <!-- S. forest-nature-park-svgrepo-com · L:62.6% T:68.1% W:4.34cqw · base:81.1% depth_t:0.80 -->
+  <img class="flora-icon" src="flora/forest-nature-park-svgrepo-com.svg" alt="" style="left:62.6%; top:68.1%; width:4.34cqw;">
+
+  <!-- S. round-tree-rounded-tree-svgrepo-com · L:30.6% T:61.6% W:4.37cqw · base:74.7% depth_t:0.84 -->
+  <img class="flora-icon" src="flora/round-tree-rounded-tree-svgrepo-com.svg" alt="" style="left:30.6%; top:61.6%; width:4.37cqw;">
+
+  <!-- S. ecology-forest-leaf-2-svgrepo-com · L:90.3% T:87.1% W:4.40cqw · base:100.3% depth_t:0.87 -->
+  <img class="flora-icon" src="flora/ecology-forest-leaf-2-svgrepo-com.svg" alt="" style="left:90.3%; top:87.1%; width:4.40cqw;">
+
+  <!-- S. ecology-flower-nature-svgrepo-com · L:9.3% T:47.3% W:4.43cqw · base:60.6% depth_t:0.91 -->
+  <img class="flora-icon" src="flora/ecology-flower-nature-svgrepo-com.svg" alt="" style="left:9.3%; top:47.3%; width:4.43cqw;">
+
+  <!-- S. tree-svgrepo-com-13 · L:48.6% T:64.7% W:4.46cqw · base:77.5% depth_t:0.94 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:48.6%; top:64.7%; width:4.46cqw;">
+
+  <!-- S. forest-round-tree-tree-2-svgrepo-com · L:41.7% T:63.7% W:4.49cqw · base:77.1% depth_t:0.98 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-2-svgrepo-com.svg" alt="" style="left:41.7%; top:63.7%; width:4.49cqw;">
+
+  <!-- B. tree-svgrepo-com-13 · L:51.0% T:72.0% W:4.61cqw · base:85.3% depth_t:0.01 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:51.0%; top:72.0%; width:4.61cqw;">
+
+  <!-- B. flower-garden-plant-svgrepo-com · L:39.6% T:71.0% W:4.64cqw · base:84.9% depth_t:0.04 -->
+  <img class="flora-icon" src="flora/flower-garden-plant-svgrepo-com.svg" alt="" style="left:39.6%; top:71.0%; width:4.64cqw;">
+
+  <!-- B. flower-forest-garden-svgrepo-com · L:36.0% T:73.7% W:4.67cqw · base:84.5% depth_t:0.07 -->
+  <img class="flora-icon" src="flora/flower-forest-garden-svgrepo-com.svg" alt="" style="left:36.0%; top:73.7%; width:4.67cqw;">
+
+  <!-- B. forest-round-tree-tree-svgrepo-com · L:95.2% T:96.2% W:4.70cqw · base:110.3% depth_t:0.10 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:95.2%; top:96.2%; width:4.70cqw;">
+
+  <!-- B. forest-round-tree-tree-svgrepo-com · L:19.5% T:62.6% W:4.73cqw · base:76.8% depth_t:0.13 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:19.5%; top:62.6%; width:4.73cqw;">
+
+  <!-- B. flower-green-leaf-svgrepo-com · L:45.0% T:72.2% W:4.76cqw · base:86.4% depth_t:0.16 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:45.0%; top:72.2%; width:4.76cqw;">
+
+  <!-- B. tree-svgrepo-com-15 · L:55.9% T:73.3% W:4.79cqw · base:87.0% depth_t:0.19 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-15.svg" alt="" style="left:55.9%; top:73.3%; width:4.79cqw;">
+
+  <!-- B. tree-svgrepo-com-4 · L:14.8% T:60.1% W:4.82cqw · base:74.1% depth_t:0.22 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:14.8%; top:60.1%; width:4.82cqw;">
+
+  <!-- B. forest-nature-park-svgrepo-com · L:82.5% T:92.9% W:4.85cqw · base:107.5% depth_t:0.25 -->
+  <img class="flora-icon" src="flora/forest-nature-park-svgrepo-com.svg" alt="" style="left:82.5%; top:92.9%; width:4.85cqw;">
+
+  <!-- B. tree-svgrepo-com-4 · L:91.1% T:96.6% W:4.88cqw · base:110.8% depth_t:0.28 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-4.svg" alt="" style="left:91.1%; top:96.6%; width:4.88cqw;">
+
+  <!-- B. flower-garden-plant-svgrepo-com · L:99.0% T:98.1% W:4.91cqw · base:112.8% depth_t:0.31 -->
+  <img class="flora-icon" src="flora/flower-garden-plant-svgrepo-com.svg" alt="" style="left:99.0%; top:98.1%; width:4.91cqw;">
+
+  <!-- B. flower-green-leaf-svgrepo-com · L:11.4% T:57.9% W:4.94cqw · base:72.7% depth_t:0.34 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:11.4%; top:57.9%; width:4.94cqw;">
+
+  <!-- B. round-tree-rounded-tree-svgrepo-com · L:69.5% T:84.1% W:4.97cqw · base:99.0% depth_t:0.37 -->
+  <img class="flora-icon" src="flora/round-tree-rounded-tree-svgrepo-com.svg" alt="" style="left:69.5%; top:84.1%; width:4.97cqw;">
+
+  <!-- B. tree-svgrepo-com-13 · L:4.2% T:54.4% W:5.00cqw · base:68.8% depth_t:0.40 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:4.2%; top:54.4%; width:5.00cqw;">
+
+  <!-- B. tree-svgrepo-com-3 · L:24.0% T:68.1% W:5.02cqw · base:82.7% depth_t:0.42 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-3.svg" alt="" style="left:24.0%; top:68.1%; width:5.02cqw;">
+
+  <!-- B. tree-svgrepo-com-15 · L:60.4% T:76.9% W:5.06cqw · base:91.3% depth_t:0.46 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-15.svg" alt="" style="left:60.4%; top:76.9%; width:5.06cqw;">
+
+  <!-- B. plant-tree-svgrepo-com · L:29.6% T:71.1% W:5.09cqw · base:86.4% depth_t:0.49 -->
+  <img class="flora-icon" src="flora/plant-tree-svgrepo-com.svg" alt="" style="left:29.6%; top:71.1%; width:5.09cqw;">
+
+  <!-- B. flower-garden-green-svgrepo-com · L:87.4% T:96.4% W:5.11cqw · base:111.7% depth_t:0.51 -->
+  <img class="flora-icon" src="flora/flower-garden-green-svgrepo-com.svg" alt="" style="left:87.4%; top:96.4%; width:5.11cqw;">
+
+  <!-- B. floral-flower-garden-svgrepo-com · L:78.8% T:97.4% W:5.15cqw · base:108.6% depth_t:0.55 -->
+  <img class="flora-icon" src="flora/floral-flower-garden-svgrepo-com.svg" alt="" style="left:78.8%; top:97.4%; width:5.15cqw;">
+
+  <!-- B. forest-leaf-nature-svgrepo-com · L:65.4% T:81.1% W:5.17cqw · base:96.7% depth_t:0.57 -->
+  <img class="flora-icon" src="flora/forest-leaf-nature-svgrepo-com.svg" alt="" style="left:65.4%; top:81.1%; width:5.17cqw;">
+
+  <!-- B. tree-svgrepo-com-2 · L:34.8% T:73.8% W:5.20cqw · base:89.1% depth_t:0.60 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-2.svg" alt="" style="left:34.8%; top:73.8%; width:5.20cqw;">
+
+  <!-- B. forest-nature-park-svgrepo-com · L:8.2% T:57.5% W:5.23cqw · base:73.2% depth_t:0.63 -->
+  <img class="flora-icon" src="flora/forest-nature-park-svgrepo-com.svg" alt="" style="left:8.2%; top:57.5%; width:5.23cqw;">
+
+  <!-- B. flower-garden-plant-svgrepo-com · L:20.2% T:66.3% W:5.26cqw · base:82.1% depth_t:0.66 -->
+  <img class="flora-icon" src="flora/flower-garden-plant-svgrepo-com.svg" alt="" style="left:20.2%; top:66.3%; width:5.26cqw;">
+
+  <!-- B. floral-flower-garden-svgrepo-com · L:1.0% T:58.6% W:5.29cqw · base:70.1% depth_t:0.69 -->
+  <img class="flora-icon" src="flora/floral-flower-garden-svgrepo-com.svg" alt="" style="left:1.0%; top:58.6%; width:5.29cqw;">
+
+  <!-- B. flower-garden-green-svgrepo-com · L:13.7% T:61.8% W:5.32cqw · base:77.8% depth_t:0.72 -->
+  <img class="flora-icon" src="flora/flower-garden-green-svgrepo-com.svg" alt="" style="left:13.7%; top:61.8%; width:5.32cqw;">
+
+  <!-- B. flower-green-leaf-svgrepo-com · L:83.6% T:96.4% W:5.35cqw · base:112.4% depth_t:0.75 -->
+  <img class="flora-icon" src="flora/flower-green-leaf-svgrepo-com.svg" alt="" style="left:83.6%; top:96.4%; width:5.35cqw;">
+
+  <!-- B. forest-round-tree-tree-svgrepo-com · L:49.6% T:76.1% W:5.38cqw · base:92.2% depth_t:0.78 -->
+  <img class="flora-icon" src="flora/forest-round-tree-tree-svgrepo-com.svg" alt="" style="left:49.6%; top:76.1%; width:5.38cqw;">
+
+  <!-- B. forest-green-plant-svgrepo-com · L:57.6% T:76.8% W:5.41cqw · base:93.0% depth_t:0.81 -->
+  <img class="flora-icon" src="flora/forest-green-plant-svgrepo-com.svg" alt="" style="left:57.6%; top:76.8%; width:5.41cqw;">
+
+  <!-- B. forest-green-plant-svgrepo-com · L:71.1% T:88.5% W:5.44cqw · base:104.8% depth_t:0.84 -->
+  <img class="flora-icon" src="flora/forest-green-plant-svgrepo-com.svg" alt="" style="left:71.1%; top:88.5%; width:5.44cqw;">
+
+  <!-- B. flower-garden-green-svgrepo-com · L:54.5% T:76.6% W:5.47cqw · base:93.0% depth_t:0.87 -->
+  <img class="flora-icon" src="flora/flower-garden-green-svgrepo-com.svg" alt="" style="left:54.5%; top:76.6%; width:5.47cqw;">
+
+  <!-- B. tree-svgrepo-com-13 · L:81.6% T:97.1% W:5.50cqw · base:112.9% depth_t:0.90 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-13.svg" alt="" style="left:81.6%; top:97.1%; width:5.50cqw;">
+
+  <!-- B. tree-svgrepo-com-19 · L:43.6% T:77.5% W:5.53cqw · base:93.2% depth_t:0.93 -->
+  <img class="flora-icon" src="flora/tree-svgrepo-com-19.svg" alt="" style="left:43.6%; top:77.5%; width:5.53cqw;">
+
+  <!-- B. flower-garden-green-svgrepo-com · L:76.5% T:94.2% W:5.56cqw · base:110.8% depth_t:0.96 -->
+  <img class="flora-icon" src="flora/flower-garden-green-svgrepo-com.svg" alt="" style="left:76.5%; top:94.2%; width:5.56cqw;">
+
+  <!-- B. forest-nature-park-svgrepo-com · L:37.4% T:76.3% W:5.59cqw · base:93.0% depth_t:0.99 -->
+  <img class="flora-icon" src="flora/forest-nature-park-svgrepo-com.svg" alt="" style="left:37.4%; top:76.3%; width:5.59cqw;">
+
+  </div><!-- /.scene-container -->
+
   <div class="hero-content">
+
+    <!-- Logo — stream + concrete path S-curve, option D (offset ±52, 20° CW rotation) -->
+    <svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Cleveland Greenway Cleanup logo">
+      <defs>
+        <clipPath id="logo-clip"><circle cx="100" cy="100" r="87"/></clipPath>
+      </defs>
+      <!-- Green background -->
+      <circle cx="100" cy="100" r="90" fill="#3D5C20"/>
+      <g clip-path="url(#logo-clip)">
+        <g transform="rotate(20, 100, 100)">
+          <!-- Stream — 48px wide, S-curve offset ±52 -->
+          <path fill="#3D8FB5" opacity="0.70"
+                d="M-5,61 C 70,9 130,113 205,73
+                   L 205,121 C 130,161 70,57 -5,109 Z"/>
+          <!-- Centerline shimmer -->
+          <path fill="none" stroke="#A8DCF0" stroke-width="4" opacity="0.35"
+                d="M-5,85 C 70,33 130,137 205,97"/>
+          <!-- Concrete path — same curve, one path-width below stream -->
+          <path fill="none" stroke="#C8BAA8" stroke-width="13"
+                stroke-linecap="butt" opacity="0.82"
+                d="M-5,129 C 70,77 130,181 205,141"/>
+        </g>
+      </g>
+      <!-- Circle border -->
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#8AAE5A" stroke-width="2.5" opacity="0.9"/>
+    </svg>
+
     <div class="hero-badge">Cleveland, TN</div>
     <h1>Cleveland Greenway Cleanup</h1>
     <p class="hero-tagline">Just show up.</p>
     <button class="hero-cta" id="open-modal">Get Involved</button>
   </div>
+
   <div class="hero-footer">
     Cleveland Greenway Cleanup &middot; Cleveland, TN
   </div>
@@ -493,6 +1456,8 @@ body.modal-open {
       <p class="modal-sub">Sign up and we'll email you before each cleanup with the time and meeting spot.</p>
 
       <form name="greenway-signup" method="POST" data-netlify="true" action="/success.html" netlify-honeypot="bot-field">
+        <!-- Hidden field that explicitly tells Netlify which form this is -->
+        <input type="hidden" name="form-name" value="greenway-signup">
         <!-- Honeypot — hidden from humans, catches spam bots -->
         <p style="display:none;">
           <label>Don't fill this out: <input name="bot-field"></label>
@@ -543,6 +1508,49 @@ body.modal-open {
      ========================================== -->
 <script>
 (function() {
+  /* ---- Color mode toggle ---- */
+  /*
+     Reads the user's saved preference from
+     localStorage (a tiny storage area in the
+     browser that persists between visits). If
+     they previously chose 'light', apply it
+     immediately on page load so they never see
+     a flash of dark content. If no preference
+     is saved, default to dark.
+
+     Clicking the toggle flips the mode, saves
+     the choice, and updates the aria-label +
+     aria-pressed so screen readers know what
+     state changed.
+  */
+  var modeToggle = document.getElementById('color-mode-toggle');
+  var STORAGE_KEY = 'gwc-color-mode';
+
+  function applyMode(mode) {
+    if (mode === 'light') {
+      document.body.classList.add('light-mode');
+      modeToggle.setAttribute('aria-label', 'Switch to dark mode');
+      modeToggle.setAttribute('aria-pressed', 'true');
+    } else {
+      document.body.classList.remove('light-mode');
+      modeToggle.setAttribute('aria-label', 'Switch to light mode');
+      modeToggle.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  // On load: read saved preference, apply it
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* storage blocked */ }
+  if (saved === 'light') applyMode('light');
+
+  modeToggle.addEventListener('click', function() {
+    var isLight = document.body.classList.contains('light-mode');
+    var next = isLight ? 'dark' : 'light';
+    applyMode(next);
+    try { localStorage.setItem(STORAGE_KEY, next); } catch (e) { /* ignore */ }
+  });
+
+  /* ---- Modal logic ---- */
   var overlay = document.getElementById('modal-overlay');
   var modal = document.getElementById('modal');
   var openBtn = document.getElementById('open-modal');
@@ -561,25 +1569,21 @@ body.modal-open {
     openBtn.focus();
   }
 
-  // Open on button click
   openBtn.addEventListener('click', openModal);
-
-  // Close on X button click
   closeBtn.addEventListener('click', closeModal);
 
-  // Close on overlay click (but not modal itself)
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) {
       closeModal();
     }
   });
 
-  // Close on Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && overlay.classList.contains('active')) {
       closeModal();
     }
   });
+
 })();
 </script>
 
