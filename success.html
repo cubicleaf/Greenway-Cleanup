@@ -6,73 +6,352 @@
 <title>You're In — Cleveland Greenway Cleanup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ============================================
+   CSS VARIABLES — Deep Earth Palette
+   Mirrors greenway-cleanup.html exactly so
+   both pages share one design language.
+   ============================================ */
+:root {
+  --loam:        #1E1A14;
+  --loam-light:  #2A2318;
+  --bark:        #3D3228;
+  --moss:        #6B7F4A;
+  --moss-muted:  #4A5638;
+  --river:       #3D8FB5;
+  --amber:       #C49A2A;
+  --amber-light: #D4A843;
+  --cream:       #F5F0E8;
+  --cream-dark:  #D5CEC2;
+  --sand:        #8A7D6B;
+  --white:       #FFFFFF;
+  --dirt:        #6B5538;
+  --sans:        'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --display:     'DM Serif Display', Georgia, serif;
+  --radius:      12px;
+}
+
+/* ============================================
+   LIGHT MODE OVERRIDES — Field Journal palette
+   ============================================ */
+body.light-mode {
+  --loam:       #D6CBAE;
+  --loam-light: #4A3E32;
+  --cream:      #2D3A1E;
+  --cream-dark: #3D3228;
+  --sand:       #6B5E4C;
+}
+
+/* ============================================
+   SMOOTH MODE CROSSFADE — 0.6s
+   ============================================ */
+:where(body, .page, .back-btn, .color-mode-toggle) {
+  transition: background-color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              color            0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color     0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
 body {
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  background: #2D4A2D;
-  color: #F5F0E8;
+  font-family: var(--sans);
+  background: var(--loam);
+  color: var(--cream);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   PAGE — full viewport, centered
+   ============================================ */
+.page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 2rem;
-  -webkit-font-smoothing: antialiased;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--loam);
 }
 
-.container {
-  max-width: 440px;
+/* Atmospheric radial gradients — same as hero on main page */
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%,   rgba(107, 127, 74, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 90%,  rgba(61, 50, 40, 0.6)    0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%,  rgba(196, 154, 42, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.light-mode .page::before {
+  background:
+    radial-gradient(ellipse at 50% 0%,   rgba(107, 127, 74, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 90%,  rgba(61, 50, 40, 0.05)   0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%,  rgba(196, 154, 42, 0.08) 0%, transparent 40%);
+}
+
+/* ============================================
+   CONTENT — centered card
+   ============================================ */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ============================================
+   LOGO — D-variant (offset ±52, 20° CW rotation)
+   Identical to the logo in greenway-cleanup.html
+   ============================================ */
+.logo {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0 auto 2rem;
   opacity: 0;
-  animation: fade-up 1s ease 0.2s forwards;
+  animation: fade-in 0.5s ease 0.05s forwards;
 }
 
+/* ============================================
+   BADGE
+   ============================================ */
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sand);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.15s forwards;
+}
+
+/* ============================================
+   HEADING
+   ============================================ */
 h1 {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  font-family: var(--display);
+  font-size: clamp(1rem, 5.5vw, 2.6rem);  /* scales down to stay on one line at any width */
   font-weight: 400;
-  line-height: 1.3;
-  margin-bottom: 1rem;
-  color: #FFFFFF;
+  line-height: 1.2;
+  white-space: nowrap;   /* forces single line — font size handles the scaling */
+  color: var(--cream);
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.25s forwards;
 }
 
+/* ============================================
+   BODY TEXT
+   ============================================ */
 p {
   font-size: 1rem;
-  color: rgba(245, 240, 232, 0.7);
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  color: var(--cream-dark);
+  line-height: 1.7;
+  max-width: 46ch;       /* wide enough for 2 lines instead of 3 */
+  text-wrap: balance;    /* modern browsers distribute line lengths evenly */
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.35s forwards;
 }
 
-a {
+/* ============================================
+   BACK BUTTON — matches hero-cta style
+   ============================================ */
+.back-btn {
   display: inline-block;
-  color: #D4A843;
-  text-decoration: none;
+  background: var(--dirt);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.8rem 2rem;
-  border: 2px solid rgba(212, 168, 67, 0.3);
+  text-decoration: none;
+  padding: 1rem 2.5rem;
   border-radius: 50px;
-  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.45s forwards;
 }
 
-a:hover {
-  background: rgba(212, 168, 67, 0.1);
-  border-color: rgba(212, 168, 67, 0.6);
+.back-btn:hover {
+  background: color-mix(in srgb, var(--dirt) 88%, var(--cream));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(196, 154, 42, 0.35);
 }
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.back-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(196, 154, 42, 0.25);
 }
+
+/* ============================================
+   COLOR MODE TOGGLE — top-right corner
+   Mirrors the toggle in greenway-cleanup.html
+   ============================================ */
+.color-mode-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(245, 240, 232, 0.15);
+  background: rgba(245, 240, 232, 0.06);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  z-index: 100;
+  opacity: 0;
+  animation: fade-in 0.5s ease 0.7s forwards;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+}
+
+.color-mode-toggle:hover {
+  background: rgba(245, 240, 232, 0.12);
+  border-color: rgba(245, 240, 232, 0.3);
+}
+
+.color-mode-toggle:active { transform: scale(0.92); }
+
+/* Show only the relevant icon for each mode */
+.icon-moon { display: block; }
+.icon-sun  { display: none;  }
+body.light-mode .icon-moon { display: none;  }
+body.light-mode .icon-sun  { display: block; }
+
+body.light-mode .color-mode-toggle {
+  border-color: rgba(30, 26, 20, 0.2);
+  background: rgba(30, 26, 20, 0.06);
+  color: var(--cream);
+}
+
+body.light-mode .color-mode-toggle:hover {
+  border-color: rgba(30, 26, 20, 0.35);
+  background: rgba(30, 26, 20, 0.1);
+}
+
+/* ============================================
+   ANIMATIONS — matches main page timing
+   ============================================ */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Many hands make light work.</h1>
-  <p>Thanks. We'll send you an email before the next cleanup with the time and meeting spot.</p>
-  <a href="/">Back to Home</a>
+
+<!-- Color mode toggle — same logic as greenway-cleanup.html -->
+<button class="color-mode-toggle" id="color-mode-toggle"
+        type="button"
+        aria-label="Switch to light mode"
+        aria-pressed="false">
+  <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"
+       fill="none" stroke="currentColor" stroke-width="1.5"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20 14.5 A 8 8 0 1 1 9.5 4 A 6 6 0 0 0 20 14.5 Z"/>
+  </svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"
+       fill="none" stroke="currentColor" stroke-width="1.5"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2 V4 M12 20 V22 M2 12 H4 M20 12 H22
+             M4.93 4.93 L6.34 6.34 M17.66 17.66 L19.07 19.07
+             M4.93 19.07 L6.34 17.66 M17.66 6.34 L19.07 4.93"/>
+  </svg>
+</button>
+
+<div class="page">
+  <div class="content">
+
+    <!-- Logo — D-variant (offset ±52, 20° CW rotation) -->
+    <svg class="logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="Cleveland Greenway Cleanup logo">
+      <defs>
+        <clipPath id="logo-clip"><circle cx="100" cy="100" r="87"/></clipPath>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="#3D5C20"/>
+      <g clip-path="url(#logo-clip)">
+        <g transform="rotate(20, 100, 100)">
+          <path fill="#3D8FB5" opacity="0.70"
+                d="M-5,61 C 70,9 130,113 205,73
+                   L 205,121 C 130,161 70,57 -5,109 Z"/>
+          <path fill="none" stroke="#A8DCF0" stroke-width="4" opacity="0.35"
+                d="M-5,85 C 70,33 130,137 205,97"/>
+          <path fill="none" stroke="#C8BAA8" stroke-width="13"
+                stroke-linecap="butt" opacity="0.82"
+                d="M-5,129 C 70,77 130,181 205,141"/>
+        </g>
+      </g>
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#8AAE5A" stroke-width="2.5" opacity="0.9"/>
+    </svg>
+
+    <h1>Many hands make light work.</h1>
+    <p>Thanks for signing up. We'll email you before the next cleanup with the time and meeting spot.</p>
+
+    <a class="back-btn" href="/">Back to Home</a>
+
+  </div>
 </div>
+
+<script>
+(function () {
+  var STORAGE_KEY = 'gwc-color-mode';
+  var modeToggle = document.getElementById('color-mode-toggle');
+
+  function applyMode(mode) {
+    if (mode === 'light') {
+      document.body.classList.add('light-mode');
+      modeToggle.setAttribute('aria-label', 'Switch to dark mode');
+      modeToggle.setAttribute('aria-pressed', 'true');
+    } else {
+      document.body.classList.remove('light-mode');
+      modeToggle.setAttribute('aria-label', 'Switch to light mode');
+      modeToggle.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  // On load: read saved preference from main page and apply it
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  if (saved === 'light') applyMode('light');
+
+  modeToggle.addEventListener('click', function () {
+    var isLight = document.body.classList.contains('light-mode');
+    var next = isLight ? 'dark' : 'light';
+    applyMode(next);
+    try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+  });
+})();
+</script>
+
 </body>
 </html>
