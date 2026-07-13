@@ -4,11 +4,16 @@
 
 **How to use it.** When something changes — a fix ships, a decision lands, the site gets an email blast — add a dated entry. Keep it honest. If the project is dormant, say so.
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 ---
 
 ## Decisions
+
+### 2026-07-13 — Hero CTA now enters later, slower, with overshoot
+**What:** The `Get Involved` button entrance was retuned independently from the rest of the hero sequence: it now waits an extra 1 second, runs 50% slower than its prior timing, and scales slightly past full size before settling.
+**Why:** Tim wanted the CTA to feel more deliberate and animated, not just delayed.
+**How to apply:** Keep the CTA on its own entrance timing track unless the full hero sequence is intentionally rebalanced again.
 
 ### 2026-07-13 — Entrance animations slowed by 50% across the site
 **What:** The staged entrance animations on the main page and success page were slowed by 50%, including both animation duration and stagger delay.

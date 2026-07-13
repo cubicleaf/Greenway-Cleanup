@@ -478,8 +478,8 @@ body.light-mode .hero::after {
    Hover: brightens the dirt by ~12% via color-mix,
      lifts 2px, glow deepens.
    Press: scale(0.95) per playbook pattern.
-   Entrance: 0.75s fade at 0.675s delay — visible
-     by about 1.425s.
+   Entrance: overshoot settle at 1.125s duration
+     with 1.675s delay — visible by about 2.8s.
    ============================================ */
 .hero-cta {
   display: inline-block;
@@ -497,7 +497,8 @@ body.light-mode .hero::after {
   box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
   min-height: 54px;
   opacity: 0;
-  animation: fade-in 0.75s ease 0.675s forwards;
+  transform: scale(0.85);
+  animation: cta-overshoot-in 1.125s cubic-bezier(0.22, 1, 0.36, 1) 1.675s forwards;
 }
 
 .hero-cta:hover {
@@ -555,6 +556,21 @@ body.light-mode .hero::after {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes cta-overshoot-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
