@@ -480,16 +480,16 @@ body.light-mode .hero-tagline {
   background: var(--dirt);
   color: var(--cream-dark);
   font-family: var(--cta-font);
-  font-size: 1.771rem;
+  font-size: 2.037rem;
   font-weight: 600;
   text-decoration: none;
-  padding: 1.1rem 3rem;
+  padding: 0.88rem 2.35rem;
   border-radius: 26px 21px 29px 19px / 19px 29px 21px 26px;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
-  min-height: 54px;
+  min-height: 46px;
   margin-top: -15px;
   opacity: 0;
   transform: scale(0.85);
@@ -646,6 +646,12 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
    On desktop: centered card.
    ============================================ */
 .modal {
+  --modal-ink-rgb: 166, 141, 107;
+  --modal-ink: rgb(var(--modal-ink-rgb));
+  --modal-ink-soft: rgba(var(--modal-ink-rgb), 0.82);
+  --modal-ink-faint: rgba(var(--modal-ink-rgb), 0.56);
+  --modal-border: rgba(var(--modal-ink-rgb), 0.34);
+  --modal-border-strong: rgba(var(--modal-ink-rgb), 0.58);
   background: var(--loam-light);
   width: 100%;
   max-width: 500px;
@@ -710,7 +716,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   padding: 0;
   border: none;
   background: none;
-  color: var(--cream);
+  color: var(--modal-ink-soft);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -743,7 +749,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   min-height: 44px;
   border: none;
   background: none;
-  color: var(--cream);
+  color: var(--modal-ink-soft);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -781,13 +787,13 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   font-family: var(--display);
   font-size: clamp(1.8rem, 5vw, 2.35rem);
   line-height: 1.1;
-  color: var(--cream);
+  color: var(--modal-ink);
   text-align: center;
   margin: 0 0 0.75rem;
 }
 
 .modal-sub {
-  color: rgba(245, 240, 232, 0.7);
+  color: var(--modal-ink-soft);
   text-align: center;
   max-width: 31rem;
   margin: 0 auto 2.25rem;
@@ -809,7 +815,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: rgba(245, 240, 232, 0.6);
+  color: var(--modal-ink-soft);
   margin-bottom: 0.4rem;
   text-transform: uppercase;
 }
@@ -820,11 +826,11 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   padding: 0.95rem 1.15rem;
   font-family: var(--sans);
   font-size: 1rem;
-  border: 2px solid rgba(245, 240, 232, 0.24);
+  border: 2px solid var(--modal-border);
   border-radius: 24px 20px 26px 18px / 18px 26px 20px 24px;
-  background: rgba(255, 255, 255, 0.055);
-  color: var(--cream);
-  box-shadow: inset 0 1px 0 rgba(245, 240, 232, 0.035);
+  background: rgba(var(--modal-ink-rgb), 0.045);
+  color: var(--modal-ink);
+  box-shadow: inset 0 1px 0 rgba(var(--modal-ink-rgb), 0.04);
   transition: background-color 0.32s var(--ease-gentle),
               border-color 0.32s var(--ease-gentle),
               box-shadow 0.32s var(--ease-gentle),
@@ -834,21 +840,21 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 }
 
 .form-group input::placeholder {
-  color: rgba(245, 240, 232, 0.3);
+  color: var(--modal-ink-faint);
 }
 
 .form-group input:focus,
 .form-group select:focus {
-  background: rgba(255, 255, 255, 0.085);
-  border-color: rgba(196, 154, 42, 0.72);
-  box-shadow: 0 8px 24px rgba(196, 154, 42, 0.08),
-              inset 0 1px 0 rgba(245, 240, 232, 0.05);
+  background: rgba(var(--modal-ink-rgb), 0.07);
+  border-color: var(--modal-border-strong);
+  box-shadow: 0 8px 24px rgba(var(--modal-ink-rgb), 0.08),
+              inset 0 1px 0 rgba(var(--modal-ink-rgb), 0.05);
   transform: translateY(-1px);
 }
 
 .form-group select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F5F0E8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23A68D6B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.25rem center;
   background-size: 12px 8px;
@@ -857,7 +863,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 
 .form-group select option {
   background: var(--loam-light);
-  color: var(--cream);
+  color: var(--modal-ink);
 }
 
 .form-row {
@@ -876,7 +882,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   display: block;
   width: max-content;
   background: none;
-  color: #B7925F;
+  color: var(--modal-ink);
   padding: 0;
   border: none;
   cursor: pointer;
@@ -909,7 +915,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 .form-note {
   text-align: center;
   font-size: 0.7rem;
-  color: rgba(245, 240, 232, 0.4);
+  color: var(--modal-ink-faint);
   margin-top: 1rem;
 }
 
@@ -1571,7 +1577,7 @@ body.light-mode .field-note-edge {
         </g>
       </g>
       <!-- Squircle border -->
-      <use href="#logo-shell" fill="none" stroke="#8AAE5A" stroke-width="3.2" opacity="0.9"/>
+      <use href="#logo-shell" fill="none" stroke="#8AAE5A" stroke-width="1.5" opacity="0.9"/>
     </svg>
 
     <div class="hero-badge">Cleveland, TN</div>
