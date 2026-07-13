@@ -20,6 +20,11 @@ Last updated: 2026-07-13
 **Why:** Tim wanted the CTA to feel a little tighter and arrive a little sooner without losing the overshoot treatment.
 **How to apply:** Treat the CTA as a distinct shape/timing exception from the other buttons unless the button system is intentionally unified later.
 
+### 2026-07-13 — Day-mode tagline darkened; hero CTA raised another 5px
+**What:** In light mode, `Just show up.` was darkened for better readability, and the `Get Involved` button was moved up another 5px.
+**Why:** The day version tagline was washing out, and the CTA still wanted a slightly tighter vertical placement.
+**How to apply:** Keep the darker light-mode tagline as a readability exception; dark mode remains unchanged.
+
 ### 2026-07-13 — Entrance animations slowed by 50% across the site
 **What:** The staged entrance animations on the main page and success page were slowed by 50%, including both animation duration and stagger delay.
 **Why:** Tim wanted the page to feel less rushed while keeping the existing entrance order and behavior.
