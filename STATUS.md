@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Hero CTA hover behavior now matches the modal submit check
+**What:** The main `Get Involved` button no longer uses its older brighter/lifted hover treatment; it now uses the same subtle hover response as the modal submit check, including the gentler lift and brightness shift.
+**Why:** The page had two different interaction languages for its two primary calls to action, which made the hero button feel disconnected from the modal system it opens.
+**How to apply:** If the hero CTA and modal submit belong to one flow, keep their hover and focus behavior aligned unless there is a deliberate reason to differentiate them.
+
 ### 2026-07-13 — Modal palette softened again; submit/check and logo outline brought back into line
 **What:** The modal ink system was lightened so the field labels, input text, and borders read more clearly without going back to stark white. The submit check-shell was thinned back to the same stroke weight as the close/help icons, and the hero logo outline was both warmed away from light green and reduced to an even thinner parchment-toned stroke.
 **Why:** The previous pass fixed coherence but overshot in two places: the submit check became heavier than the rest of the icon family, and the logo outline still felt too present while also carrying the wrong hue.
