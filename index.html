@@ -415,11 +415,11 @@ body.light-mode .hero::after {
    ENTRANCE CASCADE (condensed)
    ============================================
    Original cascade finished at 2.8s — too long
-   for a QR-code stranger who'd bounce. Compressed
-   to finish by 1.15s while preserving stagger
-   feel. Each element starts ~0.08–0.15s after
-   the one before. CTA appears by 0.95s.
-   Durations: 0.5s per item (was 1.0–1.2s).
+   for a QR-code stranger who'd bounce. Compressed,
+   then slowed back down by 50% to preserve a more
+   relaxed feel without returning to the original lag.
+   CTA now appears by about 1.425s.
+   Durations: 0.75s per item.
    ============================================ */
 .hero-logo {
   width: 120px;
@@ -427,7 +427,7 @@ body.light-mode .hero::after {
   margin: 0 auto 1.5rem;
   display: block;
   opacity: 0;
-  animation: fade-in 0.5s ease 0.05s forwards;
+  animation: fade-in 0.75s ease 0.075s forwards;
 }
 
 .hero-badge {
@@ -439,7 +439,7 @@ body.light-mode .hero::after {
   color: var(--sand);
   margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fade-in 0.5s ease 0.12s forwards;
+  animation: fade-in 0.75s ease 0.18s forwards;
 }
 
 .hero h1 {
@@ -450,12 +450,12 @@ body.light-mode .hero::after {
   margin-bottom: 2rem;
   color: var(--cream);
   opacity: 0;
-  animation: fade-in 0.5s ease 0.2s forwards;
+  animation: fade-in 0.75s ease 0.3s forwards;
 }
 
 /* "Just show up." — slides in from the left.
    Shorter slide distance (was -40px, now -24px)
-   so the 0.5s duration still feels gentle. */
+   so the longer duration still feels gentle. */
 .hero-tagline {
   font-family: var(--display);
   font-size: clamp(1.2rem, 4vw, 1.6rem);
@@ -465,7 +465,7 @@ body.light-mode .hero::after {
   margin-bottom: 3rem;
   opacity: 0;
   transform: translateX(-24px);
-  animation: slide-in-left 0.55s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s forwards;
+  animation: slide-in-left 0.825s cubic-bezier(0.25, 0.1, 0.25, 1) 0.525s forwards;
 }
 
 /* ============================================
@@ -478,8 +478,8 @@ body.light-mode .hero::after {
    Hover: brightens the dirt by ~12% via color-mix,
      lifts 2px, glow deepens.
    Press: scale(0.95) per playbook pattern.
-   Entrance: 0.5s fade at 0.45s delay — visible
-     by 0.95s, fast enough for a QR stranger.
+   Entrance: 0.75s fade at 0.675s delay — visible
+     by about 1.425s.
    ============================================ */
 .hero-cta {
   display: inline-block;
@@ -497,7 +497,7 @@ body.light-mode .hero::after {
   box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
   min-height: 54px;
   opacity: 0;
-  animation: fade-in 0.5s ease 0.45s forwards;
+  animation: fade-in 0.75s ease 0.675s forwards;
 }
 
 .hero-cta:hover {
@@ -526,7 +526,7 @@ body.light-mode .hero::after {
   color: rgba(245, 240, 232, 0.18);
   letter-spacing: 1px;
   opacity: 0;
-  animation: fade-in 0.5s ease 0.65s forwards;
+  animation: fade-in 0.75s ease 0.975s forwards;
 }
 
 .hero-footer a {
@@ -586,7 +586,7 @@ body.light-mode .hero::after {
   color: var(--cream);
   z-index: 100;
   opacity: 0;
-  animation: fade-in 0.5s ease 0.7s forwards;
+  animation: fade-in 0.75s ease 1.05s forwards;
   /* Hover and press feel */
   transition: background 0.3s ease, border-color 0.3s ease,
               color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),

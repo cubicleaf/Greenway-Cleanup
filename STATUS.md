@@ -1,0 +1,51 @@
+# Greenway Cleanup — STATUS
+
+**What this file is.** A running record of where this project stands and what decisions have been made about it. Reference [INTENT.md](INTENT.md) for what the project is trying to be.
+
+**How to use it.** When something changes — a fix ships, a decision lands, the site gets an email blast — add a dated entry. Keep it honest. If the project is dormant, say so.
+
+Last updated: 2026-07-12
+
+---
+
+## Decisions
+
+### 2026-07-13 — Entrance animations slowed by 50% across the site
+**What:** The staged entrance animations on the main page and success page were slowed by 50%, including both animation duration and stagger delay.
+**Why:** Tim wanted the page to feel less rushed while keeping the existing entrance order and behavior.
+**How to apply:** Treat 0.75s fades and 1.5x stagger delays as the current baseline unless a future pass intentionally retunes the full entrance sequence.
+
+### 2026-07-12 — QR vinyl for t-shirt completed
+**What:** The QR vinyl/t-shirt physical follow-through is done.
+**Why:** It was still listed as open work, which would misstate the current state of the project.
+**How to apply:** Remove it from open items. The remaining deferred items are digital: email blast, CTA timing, and the outdoor/indoor visual-direction decision.
+
+### 2026-07-12 — GWC reclassified Reference (done & live), not Parked; excluded from the going-cold radar
+**What:** Tim's call, refined: this isn't "Parked." Parked = deprioritized/on-ice (might resume, serving no one now, e.g. Exhibit Eclectic). GWC is **Reference × Live** — finished, deployed, and anyone can visit and use it tomorrow; it's simply not being actively developed. Outstanding items (the P0 CTA-animation delay, the outdoor/indoor pivot, the never-sent email blast) are real but minor and deferred by choice.
+**Why:** It kept hitting the Morning Brief "Going Cold" list because the radar keys off `stage: active/building`, and a finished-but-live project has no honest value in the 5-stage enum. That's a genuine gap in the system, not a GWC problem — "going cold" should only watch things you're *driving*, not things that are done and live.
+**How to apply:** Systemic fix applied today — added a Reference-exclude to `Master-Reader/routines/Hearth Routine Instructions.md` Step 4 so `greenway-cleanup` (and `zoomer-slang`) stop being radar'd, no registry edit needed. Durable fix is the two-axis migration: once `relationship: Driving/Parked/Reference` exists, gate the radar on `relationship: Driving` and delete the hand-list. Keep the P0 recorded here; deferred ≠ done.
+
+### 2026-06-24 — Docs initialized
+STATUS.md and INTENT.md created as part of a Marius documentation pass. Sourced from marius-data.js registry + April 2026 audit.
+
+### 2026-04-29 — P0 identified: CTA animation delayed to ~2.8s
+Three-agent audit confirmed the hero animation cascade is holding the primary CTA off-screen for ~2.8 seconds on load. Fix: reduce animation delay to 0.3s. This is the highest-priority open issue.
+**Why it matters:** The QR-on-trail use case means users are standing outside, in the sun, with one hand occupied. A 2.8s wait before the CTA appears costs sign-ups.
+
+### 2026-04-29 — Pivot question: outdoor vs. indoor aesthetic — unresolved
+The audit surfaced a real tension: dark loam background looks intentional indoors but fails in sunlight (glare mirror). Three honest paths: (1) commit to outdoor — light bg, dark text, fast paint; (2) commit to indoor — accept QR trail use is rare, optimize browse; (3) both — `prefers-color-scheme` + manual toggle. No decision made yet.
+**How to apply:** Any visual changes to the site should acknowledge this choice first. Don't add to either end without picking a lane.
+
+### 2026-04-27 — Canonical folder settled
+Single canonical folder: `Greenway-Cleanup/` at Documents root (GitHub-connected, Vercel-deployed). Former `webdev/projects/Greenway Cleanup/` scratch copy deleted 2026-05-17.
+
+### 2026-04-16 — Email capture via Netlify Forms
+Netlify Forms wired for email collection. Real list exists. No email has been sent to the list yet.
+
+---
+
+## Ideas / Backlog
+
+- Send one message to the email list — the list exists, use it
+- Fix P0 CTA animation before any other visual changes
+- Decide the outdoor/indoor pivot before committing to deeper design work
