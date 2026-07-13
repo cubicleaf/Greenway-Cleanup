@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Button font switched to slab-serif option; hero tagline enlarged
+**What:** The `Get Involved` button adopted the selected Option 5 font direction using a slab-like serif treatment, with the button label increased by 15%. `Just show up.` was also enlarged by 20%.
+**Why:** Tim preferred the more distinctive button type treatment and wanted both the CTA label and hero tagline to read with more presence.
+**How to apply:** Treat the hero CTA font as its own typographic accent rather than inheriting the sitewide sans by default.
+
 ### 2026-07-13 — Hero CTA now enters later, slower, with overshoot
 **What:** The `Get Involved` button entrance was retuned independently from the rest of the hero sequence: it now waits an extra 1 second, runs 50% slower than its prior timing, and scales slightly past full size before settling.
 **Why:** Tim wanted the CTA to feel more deliberate and animated, not just delayed.
