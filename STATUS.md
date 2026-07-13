@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Light-mode CTA text color switched to warmer Option 2
+**What:** The day-mode `Get Involved` label was changed from the previous earthy text color to the softer warmer Option 2 selection. Dark mode was left alone.
+**Why:** Tim preferred the warmer tone and explicitly liked the existing dark-mode treatment.
+**How to apply:** Treat hero CTA label color as mode-specific if needed; light and dark do not have to share the exact same text color.
+
 ### 2026-07-13 — Hero footer location line removed
 **What:** The bottom-of-hero `Cleveland Greenway Cleanup · Cleveland, TN` footer line was removed.
 **Why:** Tim did not want the redundant location/title line lingering at the bottom of the screen.
