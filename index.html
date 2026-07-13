@@ -50,6 +50,8 @@
   --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --display: 'DM Serif Display', Georgia, serif;
   --cta-font: 'Bree Serif', Georgia, serif;
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
   --radius: 12px;
 }
 
@@ -587,14 +589,15 @@ body.light-mode .hero-cta {
   opacity: 0;
   animation: fade-in 0.75s ease 1.05s forwards;
   /* Hover and press feel */
-  transition: background 0.3s ease, border-color 0.3s ease,
-              color 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
-              transform 0.2s ease;
+  transition: background 0.32s var(--ease-gentle), border-color 0.32s var(--ease-gentle),
+              color 0.6s var(--ease-gentle),
+              transform 0.24s var(--ease-soft);
 }
 
 .color-mode-toggle:hover {
   background: rgba(245, 240, 232, 0.12);
   border-color: rgba(245, 240, 232, 0.3);
+  transform: translateY(-1px) scale(1.04);
 }
 
 .color-mode-toggle:active {
@@ -638,7 +641,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   justify-content: center;
   align-items: flex-end; /* slides up from bottom on mobile */
   pointer-events: none;
-  transition: background 0.4s cubic-bezier(0.25, 0, 0, 1);
+  transition: background 0.45s var(--ease-gentle);
 }
 
 .modal-overlay.active {
@@ -661,7 +664,7 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   overflow-y: auto;
   padding: 0;
   transform: translateY(100%);
-  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.56s var(--ease-soft);
   position: relative;
   /* Custom scrollbar inside modal */
   scrollbar-width: thin;
@@ -686,8 +689,8 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
     max-height: 80vh;
     transform: translateY(30px);
     opacity: 0;
-    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
-                opacity 0.4s ease;
+    transition: transform 0.56s var(--ease-soft),
+                opacity 0.42s var(--ease-gentle);
   }
 
   .modal-overlay.active .modal {
@@ -729,8 +732,8 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   width: 40px;
   height: 40px;
   opacity: 0.6;
-  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-              transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: opacity 0.24s var(--ease-gentle),
+              transform 0.24s var(--ease-soft);
 }
 
 .field-note-trigger:hover .field-note-icon,
@@ -746,50 +749,35 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 .modal-close {
   width: 40px;
   height: 40px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
-  background: rgba(245, 240, 232, 0.1);
-  border-radius: 50%;
+  background: none;
+  color: var(--cream);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease, transform 0.2s ease;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.modal-close:hover {
-  background: rgba(245, 240, 232, 0.2);
+.modal-close-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.6;
+  transition: opacity 0.24s var(--ease-gentle),
+              transform 0.24s var(--ease-soft);
+}
+
+.modal-close:hover .modal-close-icon,
+.modal-close:focus-visible .modal-close-icon {
+  opacity: 1;
   transform: scale(1.05);
 }
 
-.modal-close:active {
+.modal-close:active .modal-close-icon {
   transform: scale(0.95);
-}
-
-/* Feather-style X icon using pure CSS */
-.modal-close-icon {
-  width: 18px;
-  height: 18px;
-  position: relative;
-}
-
-.modal-close-icon::before,
-.modal-close-icon::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 1.5px;
-  background: var(--cream);
-  border-radius: 1px;
-}
-
-.modal-close-icon::before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.modal-close-icon::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /* ============================================
@@ -800,18 +788,34 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 }
 
 .modal-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
   font-family: var(--display);
-  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-size: clamp(1.8rem, 5vw, 2.35rem);
+  line-height: 1.1;
   color: var(--cream);
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.modal-title-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--cream-dark);
+  flex: none;
+  opacity: 0.72;
 }
 
 .modal-sub {
   color: rgba(245, 240, 232, 0.7);
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 0.9rem;
+  max-width: 31rem;
+  margin: 0 auto 2.25rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  text-wrap: balance;
 }
 
 /* ============================================
@@ -819,6 +823,26 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
    ============================================ */
 .form-group {
   margin-bottom: 1rem;
+  position: relative;
+}
+
+.form-group.has-edit-icon::after {
+  content: '';
+  position: absolute;
+  right: 1.1rem;
+  bottom: 1rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  opacity: 0.45;
+  pointer-events: none;
+  background: currentColor;
+  color: rgba(245, 240, 232, 0.58);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3862 7.28073L16.9766 3.6903C17.4186 3.24831 18.0181 3 18.6432 3C19.9448 3 21 4.05519 21 5.35684C21 5.98192 20.7517 6.58139 20.3097 7.02338L16.7193 10.6138C15.1584 12.1747 13.2026 13.282 11.0611 13.8174L10.3671 13.9909C10.1509 14.045 9.95503 13.8491 10.0091 13.6329L10.1826 12.9389C10.718 10.7974 11.8253 8.84163 13.3862 7.28073Z' fill='black'/%3E%3Cpath d='M12 3C10.9767 3 9.95334 3.11763 8.95043 3.35288C6.17301 4.00437 4.00437 6.17301 3.35288 8.95043C2.88237 10.9563 2.88237 13.0437 3.35288 15.0496C4.00437 17.827 6.17301 19.9956 8.95044 20.6471C10.9563 21.1176 13.0437 21.1176 15.0496 20.6471C17.827 19.9956 19.9956 17.827 20.6471 15.0496C20.8824 14.0466 21 13.0233 21 12' stroke='black' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3862 7.28073L16.9766 3.6903C17.4186 3.24831 18.0181 3 18.6432 3C19.9448 3 21 4.05519 21 5.35684C21 5.98192 20.7517 6.58139 20.3097 7.02338L16.7193 10.6138C15.1584 12.1747 13.2026 13.282 11.0611 13.8174L10.3671 13.9909C10.1509 14.045 9.95503 13.8491 10.0091 13.6329L10.1826 12.9389C10.718 10.7974 11.8253 8.84163 13.3862 7.28073Z' fill='black'/%3E%3Cpath d='M12 3C10.9767 3 9.95334 3.11763 8.95043 3.35288C6.17301 4.00437 4.00437 6.17301 3.35288 8.95043C2.88237 10.9563 2.88237 13.0437 3.35288 15.0496C4.00437 17.827 6.17301 19.9956 8.95044 20.6471C10.9563 21.1176 13.0437 21.1176 15.0496 20.6471C17.827 19.9956 19.9956 17.827 20.6471 15.0496C20.8824 14.0466 21 13.0233 21 12' stroke='black' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.form-group.has-edit-icon input {
+  padding-right: 3rem;
 }
 
 .form-group label {
@@ -834,15 +858,22 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 0.9rem 1rem;
+  padding: 0.95rem 1.15rem;
   font-family: var(--sans);
   font-size: 1rem;
-  border: 2px solid rgba(245, 240, 232, 0.15);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  border-radius: 19px;
+  background-color: rgba(255, 255, 255, 0.045);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z' fill='rgba(255,255,255,0.035)' stroke='rgba(245,240,232,0.18)' stroke-width='0.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   color: var(--cream);
-  transition: border-color 0.3s ease, background 0.3s ease;
-  min-height: 50px;
+  transition: background-color 0.32s var(--ease-gentle),
+              background-image 0.32s var(--ease-gentle),
+              box-shadow 0.32s var(--ease-gentle),
+              transform 0.24s var(--ease-soft);
+  min-height: 58px;
+  outline: none;
 }
 
 .form-group input::placeholder {
@@ -851,17 +882,32 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 
 .form-group input:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: var(--amber);
-  background: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.085);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z' fill='rgba(255,255,255,0.055)' stroke='rgba(196,154,42,0.72)' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  box-shadow: 0 8px 24px rgba(196, 154, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.form-group:focus-within.has-edit-icon::after {
+  opacity: 0.72;
+  color: var(--amber);
 }
 
 .form-group select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F5F0E8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F5F0E8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z' fill='rgba(255,255,255,0.035)' stroke='rgba(245,240,232,0.18)' stroke-width='0.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 1.25rem center, center;
+  background-size: 12px 8px, 100% 100%;
   padding-right: 2.5rem;
+}
+
+.form-group select:focus {
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F5F0E8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' preserveAspectRatio='none' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z' fill='rgba(255,255,255,0.055)' stroke='rgba(196,154,42,0.72)' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 .form-group select option {
@@ -882,30 +928,45 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 }
 
 .submit-btn {
-  display: block;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(8.5rem, 52%);
   background: var(--dirt);
-  color: var(--white);
+  color: var(--cream);
   font-family: var(--sans);
   font-size: 1.1rem;
   font-weight: 600;
-  padding: 1rem;
+  padding: 0;
   border: none;
-  border-radius: 50px;
+  border-radius: 24px;
   cursor: pointer;
-  margin-top: 1.5rem;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  margin: 1.6rem auto 0;
+  transition: background 0.32s var(--ease-gentle),
+              transform 0.24s var(--ease-soft),
+              box-shadow 0.32s var(--ease-gentle);
   box-shadow: 0 4px 15px rgba(196, 154, 42, 0.20);
   min-height: 54px;
 }
 
 .submit-btn:hover {
   background: color-mix(in srgb, var(--dirt) 88%, var(--cream));
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(196, 154, 42, 0.22);
+}
+
+.submit-btn:focus-visible {
+  outline: 2px solid rgba(245, 240, 232, 0.42);
+  outline-offset: 4px;
 }
 
 .submit-btn:active {
   transform: scale(0.95);
+}
+
+.submit-icon {
+  width: 2.1rem;
+  height: 2.1rem;
 }
 
 .form-note {
@@ -1025,18 +1086,17 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
         aria-pressed="false">
   <!-- Moon icon: visible in dark mode (tap to go light) -->
   <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"
-       fill="none" stroke="currentColor" stroke-width="1.5"
-       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M20 14.5 A 8 8 0 1 1 9.5 4 A 6 6 0 0 0 20 14.5 Z"/>
+       fill="none" aria-hidden="true">
+    <path d="M13.3986 7.64605C13.495 7.37724 13.88 7.37724 13.9764 7.64605L14.2401 8.38111C14.271 8.46715 14.3395 8.53484 14.4266 8.56533L15.1709 8.82579C15.443 8.92103 15.443 9.30119 15.1709 9.39644L14.4266 9.65689C14.3395 9.68738 14.271 9.75507 14.2401 9.84112L13.9764 10.5762C13.88 10.845 13.495 10.845 13.3986 10.5762L13.1349 9.84112C13.104 9.75507 13.0355 9.68738 12.9484 9.65689L12.2041 9.39644C11.932 9.30119 11.932 8.92103 12.2041 8.82579L12.9484 8.56533C13.0355 8.53484 13.104 8.46715 13.1349 8.38111L13.3986 7.64605Z" fill="currentColor"/>
+    <path d="M16.3074 10.9122C16.3717 10.733 16.6283 10.733 16.6926 10.9122L16.8684 11.4022C16.889 11.4596 16.9347 11.5047 16.9928 11.525L17.4889 11.6987C17.6704 11.7622 17.6704 12.0156 17.4889 12.0791L16.9928 12.2527C16.9347 12.2731 16.889 12.3182 16.8684 12.3756L16.6926 12.8656C16.6283 13.0448 16.3717 13.0448 16.3074 12.8656L16.1316 12.3756C16.111 12.3182 16.0653 12.2731 16.0072 12.2527L15.5111 12.0791C15.3296 12.0156 15.3296 11.7622 15.5111 11.6987L16.0072 11.525C16.0653 11.5047 16.111 11.4596 16.1316 11.4022L16.3074 10.9122Z" fill="currentColor"/>
+    <path d="M17.7693 3.29184C17.9089 2.90272 18.4661 2.90272 18.6057 3.29184L19.0842 4.62551C19.1288 4.75006 19.2281 4.84805 19.3542 4.89219L20.7045 5.36475C21.0985 5.50263 21.0985 6.05293 20.7045 6.19081L19.3542 6.66337C19.2281 6.7075 19.1288 6.80549 19.0842 6.93005L18.6057 8.26372C18.4661 8.65284 17.9089 8.65284 17.7693 8.26372L17.2908 6.93005C17.2462 6.80549 17.1469 6.7075 17.0208 6.66337L15.6705 6.19081C15.2765 6.05293 15.2765 5.50263 15.6705 5.36475L17.0208 4.89219C17.1469 4.84805 17.2462 4.75006 17.2908 4.62551L17.7693 3.29184Z" fill="currentColor"/>
+    <path d="M3 13.4597C3 17.6241 6.4742 21 10.7598 21C14.0591 21 16.8774 18.9993 18 16.1783C17.1109 16.5841 16.1181 16.8109 15.0709 16.8109C11.2614 16.8109 8.17323 13.8101 8.17323 10.1084C8.17323 8.56025 8.71338 7.13471 9.62054 6C5.87502 6.5355 3 9.67132 3 13.4597Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
   <!-- Sun icon: visible in light mode (tap to go dark) -->
   <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20"
-       fill="none" stroke="currentColor" stroke-width="1.5"
-       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="12" cy="12" r="4"/>
-    <path d="M12 2 V4 M12 20 V22 M2 12 H4 M20 12 H22
-             M4.93 4.93 L6.34 6.34 M17.66 17.66 L19.07 19.07
-             M4.93 19.07 L6.34 17.66 M17.66 6.34 L19.07 4.93"/>
+       fill="none" aria-hidden="true">
+    <path d="M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M18.3117 5.68834L18.4286 5.57143M5.57144 18.4286L5.68832 18.3117M12 3.07394V3M12 21V20.9261M3.07394 12H3M21 12H20.9261M5.68831 5.68834L5.5714 5.57143M18.4286 18.4286L18.3117 18.3117" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </button>
 
@@ -1594,12 +1654,22 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
         </svg>
       </button>
       <button class="modal-close" id="close-modal" aria-label="Close">
-        <div class="modal-close-icon"></div>
+        <svg class="modal-close-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M13.7678 10.2322L10.2322 13.7678M13.7678 13.7678L10.2322 10.2322" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </button>
     </div>
     <div class="modal-body">
-      <h2 class="modal-title" id="modal-title">Get Involved</h2>
-      <p class="modal-sub">Sign up and we'll email you before each cleanup with the time and meeting spot.</p>
+      <h2 class="modal-title" id="modal-title">
+        <svg class="modal-title-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M13.3862 7.28073L16.9766 3.6903C17.4186 3.24831 18.0181 3 18.6432 3C19.9448 3 21 4.05519 21 5.35684C21 5.98192 20.7517 6.58139 20.3097 7.02338L16.7193 10.6138C15.1584 12.1747 13.2026 13.282 11.0611 13.8174L10.3671 13.9909C10.1509 14.045 9.95503 13.8491 10.0091 13.6329L10.1826 12.9389C10.718 10.7974 11.8253 8.84163 13.3862 7.28073Z" fill="currentColor" fill-opacity="0.15"/>
+          <path d="M20.4445 6.88859C18.7779 7.4441 16.5559 5.22205 17.1114 3.55551M16.9766 3.6903L13.3862 7.28073C11.8253 8.84163 10.718 10.7974 10.1826 12.9389L10.0091 13.6329C9.95503 13.8491 10.1509 14.045 10.3671 13.9909L11.0611 13.8174C13.2026 13.282 15.1584 12.1747 16.7193 10.6138L20.3097 7.02338C20.7517 6.58139 21 5.98192 21 5.35684C21 4.05519 19.9448 3 18.6432 3C18.0181 3 17.4186 3.24831 16.9766 3.6903Z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 3C10.9767 3 9.95334 3.11763 8.95043 3.35288C6.17301 4.00437 4.00437 6.17301 3.35288 8.95043C2.88237 10.9563 2.88237 13.0437 3.35288 15.0496C4.00437 17.827 6.17301 19.9956 8.95044 20.6471C10.9563 21.1176 13.0437 21.1176 15.0496 20.6471C17.827 19.9956 19.9956 17.827 20.6471 15.0496C20.8824 14.0466 21 13.0233 21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>Get Involved</span>
+      </h2>
+      <p class="modal-sub">Sign up, and we'll send the cleanup time and meeting spot before each event.</p>
 
       <form name="greenway-signup" method="POST" data-netlify="true" action="/success.html" netlify-honeypot="bot-field">
         <!-- Hidden field that explicitly tells Netlify which form this is -->
@@ -1610,22 +1680,22 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
         </p>
 
         <div class="form-row">
-          <div class="form-group">
+          <div class="form-group has-edit-icon">
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" placeholder="First name" required>
           </div>
-          <div class="form-group">
+          <div class="form-group has-edit-icon">
             <label for="lastName">Last Name</label>
             <input type="text" id="lastName" name="lastName" placeholder="Last name">
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group has-edit-icon">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" placeholder="your@email.com" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group has-edit-icon">
           <label for="phone">Phone (optional)</label>
           <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
         </div>
@@ -1642,7 +1712,12 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Count Me In</button>
+        <button type="submit" class="submit-btn" aria-label="Count me in">
+          <svg class="submit-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9.25 11.75L11.25 13.75L14.75 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
         <p class="form-note">No spam, ever. Just a quick heads-up before each cleanup.</p>
       </form>
     </div>

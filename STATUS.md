@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Signup modal icon and form-field visual system redesigned
+**What:** The signup modal now uses the supplied SVG family for close, sun, moon, edit, and submit controls. Form inputs visually adopt the check SVG's squircle shell without the center checkmark, the submit button is narrower and icon-only, and the modal heading/subtitle were enlarged and rewrapped.
+**Why:** Tim wanted the modal to feel more elegant, more custom, and more consistent with the new field-note icon language, even if the input-box treatment is intentionally unconventional.
+**How to apply:** Keep the actual form controls native for accessibility and Netlify submission, but use SVG-backed styling to carry the squircle visual language.
+
 ### 2026-07-13 — Added field note system inside the signup modal
 **What:** The `Get Involved` modal now includes a top-left `(?)` field-note trigger mirrored against the close button, plus a shared explanatory note overlay backed by a small note registry.
 **Why:** Tim wanted an in-modal explanation of what the group actually does without cluttering the main signup copy.
