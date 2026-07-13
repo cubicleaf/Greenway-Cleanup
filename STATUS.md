@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Modal icon controls simplified and the light-mode field note recolored
+**What:** The signup modal title no longer carries the edit-pen icon, the submit action is now just the enlarged check-shell SVG without a surrounding pill button, the day-mode field note was recolored to use darker earth-tone text instead of green, and the top-right theme toggle now uses a larger sun/moon icon inside the same squircle-shell language.
+**Why:** The prior pass still looked overdesigned in the wrong places: the pen icon muddied the title, the submit action felt nested inside another button, the day field note title was hard to read, and the mode toggle icons were undersized.
+**How to apply:** Keep the SVG family as the visual language, but let each icon stand on its own job. Do not add extra decorative shells around controls that already carry their own shape.
+
 ### 2026-07-13 — Modal form-shell cleanup after the first SVG pass
 **What:** The signup fields were pulled back from the literal stretched-SVG shell treatment and rebuilt as restrained check-shell-inspired squircles with clean borders, native controls, and no pen icons inside the fields.
 **Why:** The first pass produced distorted inner ovals and visual clutter. The cleanup keeps the custom spirit without wrecking legibility.
