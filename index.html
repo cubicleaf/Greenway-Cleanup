@@ -479,7 +479,7 @@ body.light-mode .hero::after {
      lifts 2px, glow deepens.
    Press: scale(0.95) per playbook pattern.
    Entrance: overshoot settle at 1.125s duration
-     with 1.675s delay — visible by about 2.8s.
+     with 1.375s delay — visible by about 2.5s.
    ============================================ */
 .hero-cta {
   display: inline-block;
@@ -490,15 +490,16 @@ body.light-mode .hero::after {
   font-weight: 600;
   text-decoration: none;
   padding: 1.1rem 3rem;
-  border-radius: 50px;
+  border-radius: 22px;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 20px rgba(196, 154, 42, 0.25);
   min-height: 54px;
+  margin-top: -10px;
   opacity: 0;
   transform: scale(0.85);
-  animation: cta-overshoot-in 1.125s cubic-bezier(0.22, 1, 0.36, 1) 1.675s forwards;
+  animation: cta-overshoot-in 1.125s cubic-bezier(0.22, 1, 0.36, 1) 1.375s forwards;
 }
 
 .hero-cta:hover {

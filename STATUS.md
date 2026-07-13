@@ -15,6 +15,11 @@ Last updated: 2026-07-13
 **Why:** Tim wanted the CTA to feel more deliberate and animated, not just delayed.
 **How to apply:** Keep the CTA on its own entrance timing track unless the full hero sequence is intentionally rebalanced again.
 
+### 2026-07-13 — Hero CTA shifted toward a squircle shape and earlier entrance
+**What:** The `Get Involved` button was changed from a pill to a softer squircle radius, moved 10px upward, and its custom entrance delay was reduced by 0.3 seconds.
+**Why:** Tim wanted the CTA to feel a little tighter and arrive a little sooner without losing the overshoot treatment.
+**How to apply:** Treat the CTA as a distinct shape/timing exception from the other buttons unless the button system is intentionally unified later.
+
 ### 2026-07-13 — Entrance animations slowed by 50% across the site
 **What:** The staged entrance animations on the main page and success page were slowed by 50%, including both animation duration and stagger delay.
 **Why:** Tim wanted the page to feel less rushed while keeping the existing entrance order and behavior.
