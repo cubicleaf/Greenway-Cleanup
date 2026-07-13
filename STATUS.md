@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Modal form-shell cleanup after the first SVG pass
+**What:** The signup fields were pulled back from the literal stretched-SVG shell treatment and rebuilt as restrained check-shell-inspired squircles with clean borders, native controls, and no pen icons inside the fields.
+**Why:** The first pass produced distorted inner ovals and visual clutter. The cleanup keeps the custom spirit without wrecking legibility.
+**How to apply:** When borrowing a compact icon shape for larger UI, translate the character of the shape instead of stretching the original geometry until it breaks.
+
 ### 2026-07-13 — Signup modal icon and form-field visual system redesigned
 **What:** The signup modal now uses the supplied SVG family for close, sun, moon, edit, and submit controls. Form inputs visually adopt the check SVG's squircle shell without the center checkmark, the submit button is narrower and icon-only, and the modal heading/subtitle were enlarged and rewrapped.
 **Why:** Tim wanted the modal to feel more elegant, more custom, and more consistent with the new field-note icon language, even if the input-box treatment is intentionally unconventional.
