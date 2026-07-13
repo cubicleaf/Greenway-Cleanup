@@ -701,11 +701,46 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
    ============================================ */
 .modal-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   padding: 1.2rem 1.2rem 0;
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.field-note-trigger {
+  width: 40px;
+  height: 40px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--cream);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.field-note-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.6;
+  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.field-note-trigger:hover .field-note-icon,
+.field-note-trigger:focus-visible .field-note-icon {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.field-note-trigger:active .field-note-icon {
+  transform: scale(0.95);
 }
 
 .modal-close {
@@ -878,6 +913,101 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   font-size: 0.7rem;
   color: rgba(245, 240, 232, 0.4);
   margin-top: 1rem;
+}
+
+/* ============================================
+   FIELD NOTE MODAL — shared explanatory shell
+   ============================================ */
+.field-note-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-note-overlay[hidden] {
+  display: none;
+}
+
+.field-note-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 26, 20, 0.65);
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.field-note-modal {
+  position: relative;
+  width: clamp(360px, 50vw, 680px);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+  background: var(--loam-light);
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.field-note-overlay.is-open .field-note-scrim {
+  opacity: 1;
+}
+
+.field-note-overlay.is-open .field-note-modal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.field-note-overlay.is-closing .field-note-modal {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 1, 1),
+              transform 0.18s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.field-note-overlay.is-closing .field-note-scrim {
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.field-note-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4vw, 1.95rem);
+  line-height: 1.2;
+  color: var(--cream);
+}
+
+.field-note-body,
+.field-note-edge {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(245, 240, 232, 0.8);
+}
+
+.field-note-edge {
+  margin-top: 1rem;
+  color: rgba(245, 240, 232, 0.62);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-note-scrim,
+  .field-note-modal,
+  .field-note-overlay.is-closing .field-note-modal,
+  .field-note-overlay.is-closing .field-note-scrim {
+    transition-duration: 0.01ms;
+  }
+
+  .field-note-modal,
+  .field-note-overlay.is-closing .field-note-modal {
+    transform: none;
+  }
 }
 </style>
 </head>
@@ -1442,6 +1572,27 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
+      <button class="field-note-trigger"
+              id="modal-field-note-trigger"
+              type="button"
+              data-note-id="get-involved-what-this-group-does"
+              aria-label="Field note: what this group does">
+        <svg class="field-note-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M8.95043 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95044 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95043C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95043 20.6471Z"
+            fill="currentColor"
+            fill-opacity="0.15"
+            stroke="currentColor"
+            stroke-width="1.5" />
+          <circle cx="12" cy="15.5" r="1" fill="currentColor" />
+          <path
+            d="M10 10V9.5C10 8.39543 10.8954 7.5 12 7.5C13.1046 7.5 14 8.39543 14 9.5V9.62132C14 10.1839 13.7765 10.7235 13.3787 11.1213L12 12.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
       <button class="modal-close" id="close-modal" aria-label="Close">
         <div class="modal-close-icon"></div>
       </button>
@@ -1498,6 +1649,19 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   </div>
 </div>
 
+<div class="field-note-overlay" id="field-note-overlay" hidden>
+  <div class="field-note-scrim" data-close="field-note"></div>
+  <div class="field-note-modal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="field-note-title"
+       tabindex="-1">
+    <h2 class="field-note-title" id="field-note-title"></h2>
+    <p class="field-note-body" id="field-note-body"></p>
+    <p class="field-note-edge" id="field-note-edge" hidden></p>
+  </div>
+</div>
+
 <!-- ==========================================
      JAVASCRIPT — modal open/close logic
      ========================================== -->
@@ -1550,6 +1714,23 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
   var modal = document.getElementById('modal');
   var openBtn = document.getElementById('open-modal');
   var closeBtn = document.getElementById('close-modal');
+  var fieldNoteTrigger = document.getElementById('modal-field-note-trigger');
+  var fieldNoteOverlay = document.getElementById('field-note-overlay');
+  var fieldNoteModal = fieldNoteOverlay.querySelector('.field-note-modal');
+  var fieldNoteTitle = document.getElementById('field-note-title');
+  var fieldNoteBody = document.getElementById('field-note-body');
+  var fieldNoteEdge = document.getElementById('field-note-edge');
+  var fieldNoteCloseTimer = null;
+  var activeFieldNoteTrigger = null;
+
+  var FIELD_NOTES = {
+    'get-involved-what-this-group-does': {
+      kind: 'scope',
+      title: 'What does this group do?',
+      body: 'This group organizes simple trail cleanups along the Cleveland Greenway and sends quick email heads-ups before each one. The goal is to help neighbors find the next cleanup, know where to meet, and show up ready to help keep the trail system in good shape.',
+      notFor: 'This is for cleanup updates and meetup details, not a full community forum or a constantly updated content feed.'
+    }
+  };
 
   function openModal() {
     overlay.classList.add('active');
@@ -1564,8 +1745,60 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
     openBtn.focus();
   }
 
+  function openFieldNote(trigger) {
+    var noteId = trigger.getAttribute('data-note-id');
+    var note = FIELD_NOTES[noteId];
+    if (!note) return;
+
+    if (fieldNoteCloseTimer) {
+      clearTimeout(fieldNoteCloseTimer);
+      fieldNoteCloseTimer = null;
+    }
+
+    activeFieldNoteTrigger = trigger;
+    fieldNoteTitle.textContent = note.title;
+    fieldNoteBody.textContent = note.body;
+
+    if (note.notFor) {
+      fieldNoteEdge.hidden = false;
+      fieldNoteEdge.textContent = note.notFor;
+    } else {
+      fieldNoteEdge.hidden = true;
+      fieldNoteEdge.textContent = '';
+    }
+
+    fieldNoteOverlay.hidden = false;
+    fieldNoteOverlay.classList.remove('is-closing');
+    requestAnimationFrame(function() {
+      fieldNoteOverlay.classList.add('is-open');
+      fieldNoteModal.focus();
+    });
+  }
+
+  function closeFieldNote() {
+    if (fieldNoteOverlay.hidden) return;
+
+    fieldNoteOverlay.classList.remove('is-open');
+    fieldNoteOverlay.classList.add('is-closing');
+
+    if (fieldNoteCloseTimer) clearTimeout(fieldNoteCloseTimer);
+    fieldNoteCloseTimer = setTimeout(function() {
+      fieldNoteOverlay.hidden = true;
+      fieldNoteOverlay.classList.remove('is-closing');
+      if (activeFieldNoteTrigger) activeFieldNoteTrigger.focus();
+      fieldNoteCloseTimer = null;
+    }, 200);
+  }
+
   openBtn.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
+  fieldNoteTrigger.addEventListener('click', function() {
+    if (!fieldNoteOverlay.hidden) {
+      closeFieldNote();
+    } else {
+      openFieldNote(fieldNoteTrigger);
+    }
+  });
 
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) {
@@ -1573,7 +1806,18 @@ body.light-mode .color-mode-toggle .icon-moon { display: none; }
     }
   });
 
+  fieldNoteOverlay.addEventListener('click', function(e) {
+    if (e.target === fieldNoteOverlay || e.target.hasAttribute('data-close')) {
+      closeFieldNote();
+    }
+  });
+
   document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !fieldNoteOverlay.hidden) {
+      closeFieldNote();
+      return;
+    }
+
     if (e.key === 'Escape' && overlay.classList.contains('active')) {
       closeModal();
     }

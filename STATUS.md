@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Added field note system inside the signup modal
+**What:** The `Get Involved` modal now includes a top-left `(?)` field-note trigger mirrored against the close button, plus a shared explanatory note overlay backed by a small note registry.
+**Why:** Tim wanted an in-modal explanation of what the group actually does without cluttering the main signup copy.
+**How to apply:** Future explanatory notes should reuse the same registry + overlay pattern, keep headings phrased as the user's question, and stay within the field-note copy budget.
+
 ### 2026-07-13 — Light-mode CTA text color switched to warmer Option 2
 **What:** The day-mode `Get Involved` label was changed from the previous earthy text color to the softer warmer Option 2 selection. Dark mode was left alone.
 **Why:** Tim preferred the warmer tone and explicitly liked the existing dark-mode treatment.
