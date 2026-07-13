@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Modal palette softened again; submit/check and logo outline brought back into line
+**What:** The modal ink system was lightened so the field labels, input text, and borders read more clearly without going back to stark white. The submit check-shell was thinned back to the same stroke weight as the close/help icons, and the hero logo outline was both warmed away from light green and reduced to an even thinner parchment-toned stroke.
+**Why:** The previous pass fixed coherence but overshot in two places: the submit check became heavier than the rest of the icon family, and the logo outline still felt too present while also carrying the wrong hue.
+**How to apply:** Keep related elements in the same color family, not identical values. Match icon stroke weight across the SVG controls unless there is a deliberate reason to break rank.
+
 ### 2026-07-13 — Signup modal pulled into one muted ink system; hero CTA tightened again
 **What:** The `Get Involved` modal now uses one toned-back dusty tan for its submit check, close/help icons, headings, labels, borders, input text, placeholders, and helper copy instead of mixing bright white text with cooler gray borders. The hero CTA was also tightened down in physical size while its label was enlarged, and the hero logo outline was reduced back to the same stroke weight as the modal close icon.
 **Why:** The modal had stopped feeling coherent; its parts belonged to different color systems. Separately, the hero CTA wanted denser typography without occupying as much space, and the logo border had become too heavy.
