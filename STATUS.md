@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Hero CTA label warmed and enlarged again
+**What:** The `Get Involved` label was moved off pure white into the site's earthy cream-dark text color and enlarged another 40%.
+**Why:** Tim wanted the CTA typography to feel integrated with the surrounding palette and to read much larger at a glance.
+**How to apply:** Favor warm earth-tone text on the hero CTA over stark white unless a future contrast pass intentionally changes the whole button color system.
+
 ### 2026-07-13 — Button font switched to slab-serif option; hero tagline enlarged
 **What:** The `Get Involved` button adopted the selected Option 5 font direction using a slab-like serif treatment, with the button label increased by 15%. `Just show up.` was also enlarged by 20%.
 **Why:** Tim preferred the more distinctive button type treatment and wanted both the CTA label and hero tagline to read with more presence.
