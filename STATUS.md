@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Hero CTA now shares the squircle button language
+**What:** The main hero `Get Involved` button was reshaped from a rounded pill into an asymmetric squircle so it matches the rest of the updated SVG/button system.
+**Why:** The hero CTA was lagging behind the newer visual language and still read like an older generic button.
+**How to apply:** If the site uses custom organic controls elsewhere, keep the hero CTA in the same family instead of leaving it as a default pill.
+
 ### 2026-07-13 — Modal icon controls simplified and the light-mode field note recolored
 **What:** The signup modal title no longer carries the edit-pen icon, the submit action is now just the enlarged check-shell SVG without a surrounding pill button, the day-mode field note was recolored to use darker earth-tone text instead of green, and the top-right theme toggle now uses a larger sun/moon icon inside the same squircle-shell language.
 **Why:** The prior pass still looked overdesigned in the wrong places: the pen icon muddied the title, the submit action felt nested inside another button, the day field note title was hard to read, and the mode toggle icons were undersized.
