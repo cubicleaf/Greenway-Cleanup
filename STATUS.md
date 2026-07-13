@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Control stroke weights normalized across the modal and hero badge
+**What:** The five signup fields now use thicker squircle borders, the modal submit check was scaled down and redrawn with a heavier stroke, and the hero logo badge switched from a circle to the same squircle shell with a thicker outer outline.
+**Why:** The UI had drifted into mixed line weights and mixed geometry, which made the controls feel assembled from different passes instead of belonging to one system.
+**How to apply:** When reusing the squircle language, keep both the silhouette and stroke weight consistent across buttons, fields, and badge shells rather than matching only one of those traits.
+
 ### 2026-07-13 — Hero CTA now shares the squircle button language
 **What:** The main hero `Get Involved` button was reshaped from a rounded pill into an asymmetric squircle so it matches the rest of the updated SVG/button system.
 **Why:** The hero CTA was lagging behind the newer visual language and still read like an older generic button.
