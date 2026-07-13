@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Hero footer location line removed
+**What:** The bottom-of-hero `Cleveland Greenway Cleanup · Cleveland, TN` footer line was removed.
+**Why:** Tim did not want the redundant location/title line lingering at the bottom of the screen.
+**How to apply:** Keep the hero cleaner by relying on the main title and badge only unless a future version needs explicit footer metadata again.
+
 ### 2026-07-13 — Hero CTA label warmed and enlarged again
 **What:** The `Get Involved` label was moved off pure white into the site's earthy cream-dark text color and enlarged another 40%.
 **Why:** Tim wanted the CTA typography to feel integrated with the surrounding palette and to read much larger at a glance.
