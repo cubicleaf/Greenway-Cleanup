@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Signup modal pulled into one muted ink system; hero CTA tightened again
+**What:** The `Get Involved` modal now uses one toned-back dusty tan for its submit check, close/help icons, headings, labels, borders, input text, placeholders, and helper copy instead of mixing bright white text with cooler gray borders. The hero CTA was also tightened down in physical size while its label was enlarged, and the hero logo outline was reduced back to the same stroke weight as the modal close icon.
+**Why:** The modal had stopped feeling coherent; its parts belonged to different color systems. Separately, the hero CTA wanted denser typography without occupying as much space, and the logo border had become too heavy.
+**How to apply:** For this site, treat the modal as a single warm-ink surface: one dominant ink color with opacity shifts, not separate white, gray, and amber systems fighting each other.
+
 ### 2026-07-13 — Control stroke weights normalized across the modal and hero badge
 **What:** The five signup fields now use thicker squircle borders, the modal submit check was scaled down and redrawn with a heavier stroke, and the hero logo badge switched from a circle to the same squircle shell with a thicker outer outline.
 **Why:** The UI had drifted into mixed line weights and mixed geometry, which made the controls feel assembled from different passes instead of belonging to one system.
