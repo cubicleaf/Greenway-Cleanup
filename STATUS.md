@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-13 — Hero CTA reduced another 15% in physical size
+**What:** The main `Get Involved` button was reduced another ~15% by tightening its padding, minimum height, and squircle radius while keeping the larger label size from the previous pass.
+**Why:** Tim wanted the button to occupy less physical space without losing its typographic presence.
+**How to apply:** If this CTA needs more emphasis, prefer larger type before restoring a bulkier shell.
+
 ### 2026-07-13 — Hero CTA hover behavior now matches the modal submit check
 **What:** The main `Get Involved` button no longer uses its older brighter/lifted hover treatment; it now uses the same subtle hover response as the modal submit check, including the gentler lift and brightness shift.
 **Why:** The page had two different interaction languages for its two primary calls to action, which made the hero button feel disconnected from the modal system it opens.
