@@ -10,6 +10,11 @@ Last updated: 2026-07-13
 
 ## Decisions
 
+### 2026-07-14 — Dark-mode hero CTA switched to Warm Parchment mockup direction
+**What:** The dark-mode `Get Involved` button now uses the selected Warm Parchment treatment from the mockup pass: parchment-tan fill (`#B8A07E`), dark text (`#2E241A`), no border, and a softer grounded shadow. Light mode was left alone.
+**Why:** Tim chose mockup option 2 after reviewing the visual comparison and wanted the dark CTA to read warmer and clearer without changing the day version.
+**How to apply:** When a mockup direction is selected, implement it mode-specifically if the other mode has already been tuned separately. Do not collapse light and dark into one compromise token set.
+
 ### 2026-07-13 — Hero CTA reduced another 15% in physical size
 **What:** The main `Get Involved` button was reduced another ~15% by tightening its padding, minimum height, and squircle radius while keeping the larger label size from the previous pass.
 **Why:** Tim wanted the button to occupy less physical space without losing its typographic presence.
