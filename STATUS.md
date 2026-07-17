@@ -1,3 +1,11 @@
+---
+attention: Reference
+state: Live
+form: Website
+updated: 2026-07-14
+live_url: https://greenwaycleanup.vercel.app
+---
+
 # Greenway Cleanup — STATUS
 
 **What this file is.** A running record of where this project stands and what decisions have been made about it. Reference [INTENT.md](INTENT.md) for what the project is trying to be.
@@ -134,7 +142,7 @@ Netlify Forms wired for email collection. Real list exists. No email has been se
 
 ---
 
-## Ideas / Backlog
+## Back Burner
 
 - Send one message to the email list — the list exists, use it
 - Fix P0 CTA animation before any other visual changes
