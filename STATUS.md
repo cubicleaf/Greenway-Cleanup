@@ -2,7 +2,7 @@
 attention: Reference
 state: Live
 form: Website
-updated: 2026-07-14
+updated: 2026-07-20
 live_url: https://greenwaycleanup.vercel.app
 ---
 
@@ -12,11 +12,18 @@ live_url: https://greenwaycleanup.vercel.app
 
 **How to use it.** When something changes — a fix ships, a decision lands, the site gets an email blast — add a dated entry. Keep it honest. If the project is dormant, say so.
 
-Last updated: 2026-07-13
+Last updated: 2026-07-20
 
 ---
 
 ## Decisions
+
+### 2026-07-20 — Low-risk audit polish landed; stale CTA-delay open item cleared
+**What:** Applied the safest remaining audit fixes: `index.html` and `success.html` now use `<main>` landmarks plus keyboard-visible skip links, `100svh` viewport fallbacks, and broad reduced-motion handling; the hero CTA and signup modal close control are explicitly 44px minimum touch targets; the hidden Netlify honeypot is hidden from assistive tech and removed from tab order; the success page copy now opens with "Welcome to the Greenway crew." The old Back Burner item to fix the April CTA-delay P0 was removed because later July work already replaced that pre-audit failure mode with a deliberate, documented CTA entrance treatment.
+**Why:** These fixes improve accessibility and mobile robustness without changing the visual direction or signup flow. Removing the stale CTA item prevents future sessions from treating a resolved April audit issue as current work.
+**Rejected:** A broader modal focus-trap rewrite in this pass; that touches keyboard behavior and should be handled deliberately rather than bundled into low-hanging CSS/markup cleanup.
+**How to apply:** Keep the landmark/skip-link/reduced-motion baseline on both pages. Treat the current CTA timing as the July design direction unless Tim explicitly reopens the outdoor-first speed tradeoff.
+**Evidence strength:** Claude-suggested, Tim-approved.
 
 ### 2026-07-14 — Dark-mode hero CTA switched to Warm Parchment mockup direction
 **What:** The dark-mode `Get Involved` button now uses the selected Warm Parchment treatment from the mockup pass: parchment-tan fill (`#B8A07E`), dark text (`#2E241A`), no border, and a softer grounded shadow. Light mode was left alone.
@@ -145,5 +152,4 @@ Netlify Forms wired for email collection. Real list exists. No email has been se
 ## Back Burner
 
 - Send one message to the email list — the list exists, use it
-- Fix P0 CTA animation before any other visual changes
 - Decide the outdoor/indoor pivot before committing to deeper design work
