@@ -18,6 +18,13 @@ Last updated: 2026-07-20
 
 ## Decisions
 
+### 2026-07-20 — Signup and field-note overlays now contain keyboard focus
+**What:** Added deliberate focus trapping for the main `Get Involved` signup modal and its nested field-note overlay in `index.html`. Tab/Shift+Tab now stay inside the active overlay, Escape still closes the topmost overlay first, and focus returns to the invoking control after close.
+**Why:** The audit flagged missing focus containment as the remaining keyboard-accessibility risk. This changes keyboard behavior, so it was handled separately from the low-risk markup/CSS polish.
+**Rejected:** A broader redesign of the modal flow; the signup form, Netlify submission path, and visual treatment are unchanged.
+**How to apply:** Reuse the same active-overlay stack pattern if more nested notes or modals are added.
+**Evidence strength:** Claude-suggested, Tim-approved.
+
 ### 2026-07-20 — Low-risk audit polish landed; stale CTA-delay open item cleared
 **What:** Applied the safest remaining audit fixes: `index.html` and `success.html` now use `<main>` landmarks plus keyboard-visible skip links, `100svh` viewport fallbacks, and broad reduced-motion handling; the hero CTA and signup modal close control are explicitly 44px minimum touch targets; the hidden Netlify honeypot is hidden from assistive tech and removed from tab order; the success page copy now opens with "Welcome to the Greenway crew." The old Back Burner item to fix the April CTA-delay P0 was removed because later July work already replaced that pre-audit failure mode with a deliberate, documented CTA entrance treatment.
 **Why:** These fixes improve accessibility and mobile robustness without changing the visual direction or signup flow. Removing the stale CTA item prevents future sessions from treating a resolved April audit issue as current work.
