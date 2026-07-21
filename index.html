@@ -1077,20 +1077,19 @@ body.light-mode .field-note-edge {
 }
 </style>
 </head>
-<body>
+<body class="light-mode">
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- ==========================================
      COLOR MODE TOGGLE — fixed top-right.
-     Click to switch between dark (default) and
-     light (field-journal) mode. Choice persists
-     via localStorage.
+     Click to switch between light (outdoor-first default)
+     and dark mode. Choice persists via localStorage.
      ========================================== -->
 <button class="color-mode-toggle" id="color-mode-toggle"
         type="button"
-        aria-label="Switch to light mode"
-        aria-pressed="false">
+        aria-label="Switch to dark mode"
+        aria-pressed="true">
   <!-- Moon icon: visible in dark mode (tap to go light) -->
   <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20"
        fill="none" aria-hidden="true">
@@ -1749,10 +1748,9 @@ body.light-mode .field-note-edge {
      Reads the user's saved preference from
      localStorage (a tiny storage area in the
      browser that persists between visits). If
-     they previously chose 'light', apply it
-     immediately on page load so they never see
-     a flash of dark content. If no preference
-     is saved, default to dark.
+     they previously chose 'dark', apply it.
+     If no preference is saved, stay in the
+     outdoor-first light default.
 
      Clicking the toggle flips the mode, saves
      the choice, and updates the aria-label +
@@ -1774,10 +1772,10 @@ body.light-mode .field-note-edge {
     }
   }
 
-  // On load: read saved preference, apply it
+  // On load: read saved preference, otherwise keep the light default.
   var saved = null;
   try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* storage blocked */ }
-  if (saved === 'light') applyMode('light');
+  applyMode(saved === 'dark' ? 'dark' : 'light');
 
   modeToggle.addEventListener('click', function() {
     var isLight = document.body.classList.contains('light-mode');
