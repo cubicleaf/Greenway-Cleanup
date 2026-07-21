@@ -18,6 +18,13 @@ Last updated: 2026-07-20
 
 ## Decisions
 
+### 2026-07-20 — Outdoor-first visual direction chosen; light mode is default
+**What:** Resolved the outdoor/indoor pivot by making light mode the no-preference default on both `index.html` and `success.html`, while preserving the manual dark-mode toggle and any saved dark preference.
+**Why:** The project's core use case is QR-to-phone signup for people who may be standing outside near the Greenway. Daylight readability and fast comprehension should win for first-time visitors; the dark loam version remains available for people who prefer the atmospheric indoor read.
+**Rejected:** Removing dark mode or redesigning the light palette in this pass.
+**How to apply:** Treat Greenway as outdoor-first by default. Future deeper design work can still tune light mode, but should not return the first-visit default to dark unless the real usage context changes.
+**Evidence strength:** Tim-directed.
+
 ### 2026-07-20 — Signup and field-note overlays now contain keyboard focus
 **What:** Added deliberate focus trapping for the main `Get Involved` signup modal and its nested field-note overlay in `index.html`. Tab/Shift+Tab now stay inside the active overlay, Escape still closes the topmost overlay first, and focus returns to the invoking control after close.
 **Why:** The audit flagged missing focus containment as the remaining keyboard-accessibility risk. This changes keyboard behavior, so it was handled separately from the low-risk markup/CSS polish.
@@ -145,8 +152,7 @@ Three-agent audit confirmed the hero animation cascade is holding the primary CT
 **Why it matters:** The QR-on-trail use case means users are standing outside, in the sun, with one hand occupied. A 2.8s wait before the CTA appears costs sign-ups.
 
 ### 2026-04-29 — Pivot question: outdoor vs. indoor aesthetic — unresolved
-The audit surfaced a real tension: dark loam background looks intentional indoors but fails in sunlight (glare mirror). Three honest paths: (1) commit to outdoor — light bg, dark text, fast paint; (2) commit to indoor — accept QR trail use is rare, optimize browse; (3) both — `prefers-color-scheme` + manual toggle. No decision made yet.
-**How to apply:** Any visual changes to the site should acknowledge this choice first. Don't add to either end without picking a lane.
+Resolved 2026-07-20: outdoor-first default with dark mode preserved as an alternate.
 
 ### 2026-04-27 — Canonical folder settled
 Single canonical folder: `Greenway-Cleanup/` at Documents root (GitHub-connected, Vercel-deployed). Former `webdev/projects/Greenway Cleanup/` scratch copy deleted 2026-05-17.
@@ -159,4 +165,3 @@ Netlify Forms wired for email collection. Real list exists. No email has been se
 ## Back Burner
 
 - Send one message to the email list — the list exists, use it
-- Decide the outdoor/indoor pivot before committing to deeper design work
