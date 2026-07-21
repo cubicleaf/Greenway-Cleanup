@@ -18,6 +18,13 @@ Last updated: 2026-07-20
 
 ## Decisions
 
+### 2026-07-20 — First Netlify list message sent
+**What:** Sent the first test message to the Netlify Forms signup list through Gmail/BCC using the captured form submissions.
+**Why:** This proved the operational loop: signup form captures entries, Netlify exposes the list, and Tim can message the group when cleanup details exist.
+**Rejected:** Adding an email-list product before there is a real audience size that needs unsubscribe/deliverability tooling.
+**How to apply:** For small lists, export/copy Netlify submission emails and send via BCC. If the list grows beyond a small handful of real people, move to a lightweight email-list tool.
+**Evidence strength:** Tim-directed.
+
 ### 2026-07-20 — Outdoor-first visual direction chosen; light mode is default
 **What:** Resolved the outdoor/indoor pivot by making light mode the no-preference default on both `index.html` and `success.html`, while preserving the manual dark-mode toggle and any saved dark preference.
 **Why:** The project's core use case is QR-to-phone signup for people who may be standing outside near the Greenway. Daylight readability and fast comprehension should win for first-time visitors; the dark loam version remains available for people who prefer the atmospheric indoor read.
@@ -158,10 +165,10 @@ Resolved 2026-07-20: outdoor-first default with dark mode preserved as an altern
 Single canonical folder: `Greenway-Cleanup/` at Documents root (GitHub-connected, Vercel-deployed). Former `webdev/projects/Greenway Cleanup/` scratch copy deleted 2026-05-17.
 
 ### 2026-04-16 — Email capture via Netlify Forms
-Netlify Forms wired for email collection. Real list exists. No email has been sent to the list yet.
+Netlify Forms wired for email collection. Real list exists. First test message sent 2026-07-20.
 
 ---
 
 ## Back Burner
 
-- Send one message to the email list — the list exists, use it
+No active Greenway open items.
