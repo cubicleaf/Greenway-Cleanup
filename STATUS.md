@@ -12,11 +12,16 @@ live_url: https://greenwaycleanup.vercel.app
 
 **How to use it.** When something changes — a fix ships, a decision lands, the site gets an email blast — add a dated entry. Keep it honest. If the project is dormant, say so.
 
-Last updated: 2026-07-20
+Last updated: 2026-07-30
 
 ---
 
 ## Decisions
+
+### 2026-07-30 — Favicon built from the existing hero logo
+**What:** Generated favicon.ico + 16/32/180/192/512 PNGs + site.webmanifest, saved to project root, link tags added to both `index.html` and `success.html` `<head>`. Icon is a simplified version of the hero's existing squircle badge (green `#3D5C20` background, blue stream + tan trail path bands at 20°) rather than a new leaf-based mark — the badge was already a deliberate design decision.
+**Why:** Continuing the portfolio-wide favicon rollout (see `webdev/_docs/favicon-pipeline-STATUS.md`).
+**How to apply:** Not committed/pushed — this sandbox has no GitHub credentials and can't complete git's lock-file cleanup on the connected Documents folder, so commit/push was handed to Tim as a command block.
 
 ### 2026-07-20 — First Netlify list message sent
 **What:** Sent the first test message to the Netlify Forms signup list through Gmail/BCC using the captured form submissions.
