@@ -2,7 +2,7 @@
 attention: Reference
 state: Live
 form: Website
-updated: 2026-07-20
+updated: 2026-09-21
 live_url: https://greenwaycleanup.vercel.app
 ---
 
@@ -12,11 +12,16 @@ live_url: https://greenwaycleanup.vercel.app
 
 **How to use it.** When something changes — a fix ships, a decision lands, the site gets an email blast — add a dated entry. Keep it honest. If the project is dormant, say so.
 
-Last updated: 2026-07-30
+Last updated: 2026-09-21
 
 ---
 
 ## Decisions
+
+### 2026-09-21 — `old images/` purged from git history; folder kept on disk
+**What:** The `old images/` folder was tracked in git, so all 9 files (10.5 MB) shipped in every Vercel deployment despite being referenced by no HTML, CSS, JS, or manifest. Purged from all 31 commits with `git filter-repo --path "old images" --invert-paths`, then force-pushed `main`. Tracked payload went **10.9 MB → 396 KB**; `.git` went **11 MB → 320 KB**. The folder itself was restored to disk byte-for-byte from a pre-rewrite backup and is now gitignored, so the screenshots are still there locally — they just no longer travel.
+**Why:** Found while investigating a Vercel "100% of Deployment Storage" warning on the shared `tims-projects-5135e79e` team. `old images/` was ~96% of this project's deployed payload. **It was not the cause of that warning** — the real culprit was an unrelated dead project billing 8.35 GB — but it was genuine waste worth fixing on its own terms. Fitness had the identical problem and got the same treatment; Master-Reader, Zifang, GSW and Charles Hub already had theirs untracked.
+**How to apply:** Every commit SHA in this repo changed. Any clone elsewhere must be re-cloned, not pulled. GitHub will keep reporting the old repo size until its garbage collector runs — the file tree is already clean, so ignore that number. The one real consequence: **GitHub is no longer an offsite backup of those screenshots**; Tim confirmed on 2026-09-21 that they are backed up elsewhere. Do not re-add the folder to git — the `.gitignore` rule is there to prevent exactly that.
 
 ### 2026-07-30 — Favicon built from the existing hero logo
 **What:** Generated favicon.ico + 16/32/180/192/512 PNGs + site.webmanifest, saved to project root, link tags added to both `index.html` and `success.html` `<head>`. Icon is a simplified version of the hero's existing squircle badge (green `#3D5C20` background, blue stream + tan trail path bands at 20°) rather than a new leaf-based mark — the badge was already a deliberate design decision.
