@@ -1,1 +1,4 @@
 .DS_Store
+
+# Local screenshot archive — kept on disk, never deployed or pushed
+old images/
